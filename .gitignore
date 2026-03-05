@@ -38,4 +38,4 @@ export-*.tar*
 
 # Optional: keep if you don't want to commit database or uploads
 # .tmp/
-# public/uploads/
+!public/uploads/
