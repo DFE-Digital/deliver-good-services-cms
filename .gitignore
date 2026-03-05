@@ -12,6 +12,8 @@ dist/
 .env
 .env.*
 !.env.example
+.env.development
+.env.production
 
 # Logs and debug
 *.log
@@ -29,6 +31,10 @@ Desktop.ini
 .idea/
 *.swp
 *.swo
+
+# Data transfer exports (may contain sensitive data)
+export-*.tar*
+*.tar.gz.enc
 
 # Optional: keep if you don't want to commit database or uploads
 # .tmp/
