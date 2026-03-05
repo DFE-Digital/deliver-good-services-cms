@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "standards",
+  "info": {
+    "singularName": "standard",
+    "pluralName": "standards",
+    "displayName": "Standard",
+    "description": "Standard that can be linked from phase requirements and tagged with applicable_phases"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "applicable_phases": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::phase.phase",
+      "description": "Phases this standard applies to (for phase page listing)"
+    }
+  }
+}

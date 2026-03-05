@@ -1,0 +1,56 @@
+{
+  "kind": "collectionType",
+  "collectionName": "stage_task_placements",
+  "info": {
+    "singularName": "stage-task-placement",
+    "pluralName": "stage-task-placements",
+    "displayName": "Stage Task Placement",
+    "description": "Places a task within a lifecycle stage with order and optional overrides"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "whenLabel": {
+      "type": "string",
+      "description": "e.g. 'First — before anything else'"
+    },
+    "order": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "stageNotes": {
+      "type": "richtext"
+    },
+    "overrideGuidanceLinks": {
+      "type": "component",
+      "component": "shared.link-item",
+      "repeatable": true
+    },
+    "visibility": {
+      "type": "enumeration",
+      "enum": ["published", "draft", "archived"],
+      "default": "published"
+    },
+    "stage": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::lifecycle-stage.lifecycle-stage",
+      "inversedBy": "placements"
+    },
+    "task": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::task.task",
+      "inversedBy": "placements"
+    },
+    "overrideOutputs": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::output.output",
+      "description": "Stage-specific output overrides (else task defaults apply)"
+    }
+  }
+}

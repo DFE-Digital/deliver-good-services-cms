@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_phase_phase_requirements",
+  "info": {
+    "displayName": "Phase requirement",
+    "description": "Mandatory requirement with evidence and optional linked standard"
+  },
+  "options": {},
+  "attributes": {
+    "requirement_title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "richtext",
+      "required": true
+    },
+    "evidence_examples": {
+      "type": "richtext"
+    },
+    "related_standard": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::standard.standard",
+      "description": "Linked standard"
+    }
+  }
+}

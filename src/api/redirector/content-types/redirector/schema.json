@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "redirectors",
+  "info": {
+    "singularName": "redirector",
+    "pluralName": "redirectors",
+    "displayName": "Redirector"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "shortURL": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "regex": "[A-Za-z]"
+    },
+    "urlToRedirectTo": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_content_related_contents",
+  "info": {
+    "displayName": "Related content"
+  },
+  "options": {},
+  "attributes": {
+    "Header": {
+      "type": "string",
+      "required": true
+    },
+    "Content": {
+      "type": "richtext"
+    }
+  },
+  "config": {}
+}

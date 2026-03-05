@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_phase_phase_assurances",
+  "info": {
+    "displayName": "Phase assurance",
+    "description": "Assurance and governance for the phase"
+  },
+  "options": {},
+  "attributes": {
+    "assurance_type": {
+      "type": "enumeration",
+      "enum": ["Peer review", "Service assessment", "None"],
+      "required": true
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "governance_body": {
+      "type": "string"
+    },
+    "preparation_guidance": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::detailed-guide.detailed-guide",
+      "description": "Prep materials"
+    }
+  }
+}

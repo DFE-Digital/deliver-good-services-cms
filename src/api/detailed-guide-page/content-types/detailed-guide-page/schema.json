@@ -1,0 +1,70 @@
+{
+  "kind": "collectionType",
+  "collectionName": "detailed_guide_pages",
+  "info": {
+    "singularName": "detailed-guide-page",
+    "pluralName": "detailed-guide-pages",
+    "displayName": "Detailed guide page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "metaDescription": {
+      "type": "text",
+      "maxLength": 240,
+      "required": true
+    },
+    "beforeContents": {
+      "type": "richtext"
+    },
+    "body": {
+      "type": "richtext",
+      "required": true
+    },
+    "detailed_guide": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::detailed-guide.detailed-guide",
+      "inversedBy": "detailed_guide_pages"
+    },
+    "relatedContent": {
+      "type": "component",
+      "component": "content.related-content",
+      "repeatable": true
+    },
+    "userNeeds": {
+      "type": "component",
+      "component": "content.user-need",
+      "repeatable": true
+    },
+    "hideContents": {
+      "type": "boolean",
+      "required": false,
+      "default": false
+    },
+    "hideTitleAndDescription": {
+      "type": "boolean"
+    },
+    "professionsApplicable": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tags-profession.tags-profession",
+      "mappedBy": "detailed_guide_page"
+    },
+    "hideGuidePagesNav": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

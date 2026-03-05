@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_lifecycle_hub_sections",
+  "info": {
+    "displayName": "Lifecycle hub section",
+    "description": "Repeatable content section on the lifecycle hub (intro, key messages)"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "body": {
+      "type": "richtext"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tags_professions",
+  "info": {
+    "singularName": "tags-profession",
+    "pluralName": "tags-professions",
+    "displayName": "Tags - Profession"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "active": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "detailed_guide_page": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::detailed-guide-page.detailed-guide-page",
+      "inversedBy": "professionsApplicable"
+    }
+  }
+}

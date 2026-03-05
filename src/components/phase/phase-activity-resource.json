@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_phase_phase_activity_resources",
+  "info": {
+    "displayName": "Phase activity resource",
+    "description": "Download, artefact, template, case study or link for a lifecycle task"
+  },
+  "options": {},
+  "attributes": {
+    "resourceType": {
+      "type": "enumeration",
+      "enum": ["download", "artefact", "template", "case_study", "link"],
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "url": {
+      "type": "string",
+      "description": "URL for link, or for download/artefact/template if not using media"
+    },
+    "media": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["files"],
+      "description": "File for download/template/artefact"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    }
+  },
+  "config": {}
+}

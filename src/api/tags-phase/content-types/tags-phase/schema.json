@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tags_phases",
+  "info": {
+    "singularName": "tags-phase",
+    "pluralName": "tags-phases",
+    "displayName": "Tags - Phase"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "single_page_guide": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::single-page-guide.single-page-guide",
+      "inversedBy": "phaseTag"
+    },
+    "collection": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::collection.collection",
+      "inversedBy": "phaseTag"
+    }
+  }
+}

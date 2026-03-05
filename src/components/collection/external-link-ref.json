@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_collection_external_link_refs",
+  "info": {
+    "displayName": "External link ref",
+    "description": "One external link in a section"
+  },
+  "options": {},
+  "attributes": {
+    "external_link": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::external-link.external-link"
+    }
+  },
+  "config": {}
+}

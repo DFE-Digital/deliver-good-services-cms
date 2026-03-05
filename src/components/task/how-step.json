@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_task_how_steps",
+  "info": {
+    "displayName": "How step",
+    "description": "Single step in the How section of a task"
+  },
+  "options": {},
+  "attributes": {
+    "stepText": {
+      "type": "text",
+      "required": true
+    }
+  },
+  "config": {}
+}

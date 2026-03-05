@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_lifecycle_related_guidance_links",
+  "info": {
+    "displayName": "Related guidance link",
+    "description": "Link for the lifecycle hub 'Related guidance' sidebar (e.g. Service Standard, Delivery checklist)"
+  },
+  "options": {},
+  "attributes": {
+    "external_link": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::external-link.external-link",
+      "description": "Link to guidance page or resource"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    }
+  },
+  "config": {}
+}

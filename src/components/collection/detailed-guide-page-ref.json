@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_collection_detailed_guide_page_refs",
+  "info": {
+    "displayName": "Detailed guide page ref",
+    "description": "One detailed guide page in a section"
+  },
+  "options": {},
+  "attributes": {
+    "detailed_guide_page": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::detailed-guide-page.detailed-guide-page"
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_shared_link_cards",
+  "info": {
+    "displayName": "Link card",
+    "description": "Card-style link (e.g. for Lucid resources) with label, description, url, icon, bg colour"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "icon": {
+      "type": "string"
+    },
+    "bgColourHex": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

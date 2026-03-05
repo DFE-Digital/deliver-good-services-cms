@@ -1,0 +1,42 @@
+{
+  "collectionName": "components_collection_sections",
+  "info": {
+    "displayName": "Section",
+    "description": "One section in a collection: title, description, and links (detailed guide, external links, single page guides)"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    },
+    "detailed_guides": {
+      "type": "component",
+      "component": "collection.detailed-guide-ref",
+      "repeatable": true
+    },
+    "detailed_guide_pages": {
+      "type": "component",
+      "component": "collection.detailed-guide-page-ref",
+      "repeatable": true
+    },
+    "external_links": {
+      "type": "component",
+      "component": "collection.external-link-ref",
+      "repeatable": true
+    },
+    "single_page_guides": {
+      "type": "component",
+      "component": "collection.single-page-guide-ref",
+      "repeatable": true
+    }
+  },
+  "config": {}
+}

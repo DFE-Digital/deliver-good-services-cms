@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Strapi build and cache
+build/
+dist/
+.cache/
+.tmp/
+.strapi/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Logs and debug
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Optional: keep if you don't want to commit database or uploads
+# .tmp/
+# public/uploads/

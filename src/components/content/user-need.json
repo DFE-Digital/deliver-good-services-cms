@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_content_user_needs",
+  "info": {
+    "displayName": "User need",
+    "icon": "user"
+  },
+  "options": {},
+  "attributes": {
+    "as_a": {
+      "type": "string",
+      "required": true
+    },
+    "i_need": {
+      "type": "text"
+    },
+    "so_that": {
+      "type": "text"
+    },
+    "validated": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "config": {}
+}

@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_lifecycle_profession_sidebar_links",
+  "info": {
+    "displayName": "DDaT profession sidebar link",
+    "description": "Link for the lifecycle hub 'DDaT professions' sidebar"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    }
+  },
+  "config": {}
+}

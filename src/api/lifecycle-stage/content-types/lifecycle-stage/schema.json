@@ -1,0 +1,65 @@
+{
+  "kind": "collectionType",
+  "collectionName": "lifecycle_stages",
+  "info": {
+    "singularName": "lifecycle-stage",
+    "pluralName": "lifecycle-stages",
+    "displayName": "Lifecycle Stage",
+    "description": "Stage within a lifecycle (e.g. Explore, Discovery, Alpha)"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "summary": {
+      "type": "richtext"
+    },
+    "durationLabel": {
+      "type": "string",
+      "description": "e.g. '2–4 weeks · 1–3 people'"
+    },
+    "order": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "colourHex": {
+      "type": "string"
+    },
+    "tagLabel": {
+      "type": "string"
+    },
+    "isCollapsedByDefault": {
+      "type": "boolean",
+      "default": false
+    },
+    "lifecycle": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::lifecycle.lifecycle",
+      "inversedBy": "stages"
+    },
+    "activeTracks": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::track.track",
+      "description": "Tracks active in this stage (e.g. Design, Build, Run)"
+    },
+    "placements": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::stage-task-placement.stage-task-placement",
+      "mappedBy": "stage"
+    }
+  }
+}

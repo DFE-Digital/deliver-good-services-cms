@@ -1,0 +1,67 @@
+{
+  "kind": "collectionType",
+  "collectionName": "collections",
+  "info": {
+    "singularName": "collection",
+    "pluralName": "collections",
+    "displayName": "Collection"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "maxLength": 70,
+      "required": true,
+      "unique": true
+    },
+    "metaDescription": {
+      "type": "text",
+      "maxLength": 240,
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "body": {
+      "type": "richtext"
+    },
+    "phaseTag": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tags-phase.tags-phase",
+      "mappedBy": "collection"
+    },
+    "sections": {
+      "type": "component",
+      "component": "collection.section",
+      "repeatable": true
+    },
+    "relatedContent": {
+      "type": "component",
+      "component": "content.related-content",
+      "repeatable": true
+    },
+    "userNeeds": {
+      "type": "component",
+      "component": "content.user-need",
+      "repeatable": true
+    },
+    "detailed_guides": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::detailed-guide.detailed-guide",
+      "mappedBy": "collection"
+    },
+    "single_page_guides": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::single-page-guide.single-page-guide",
+      "mappedBy": "collection"
+    }
+  }
+}

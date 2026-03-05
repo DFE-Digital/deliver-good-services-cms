@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_phase_related_links",
+  "info": {
+    "displayName": "Phase related link",
+    "description": "External link for phase related guidance, standards, tools or training"
+  },
+  "options": {},
+  "attributes": {
+    "external_link": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::external-link.external-link"
+    }
+  },
+  "config": {}
+}

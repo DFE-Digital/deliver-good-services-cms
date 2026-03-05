@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_shared_link_items",
+  "info": {
+    "displayName": "Link item",
+    "description": "Single link with label, url, optional source and new-tab flag"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    },
+    "sourceLabel": {
+      "type": "string"
+    },
+    "opensInNewTab": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "config": {}
+}
