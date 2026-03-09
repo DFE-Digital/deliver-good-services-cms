@@ -42,6 +42,19 @@ export interface CollectionExternalLinkRef extends Struct.ComponentSchema {
   };
 }
 
+export interface CollectionJobFamily extends Struct.ComponentSchema {
+  collectionName: 'components_collection_job_families';
+  info: {
+    displayName: 'job_family';
+  };
+  attributes: {
+    job_specifications: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::job-specification.job-specification'
+    >;
+  };
+}
+
 export interface CollectionSection extends Struct.ComponentSchema {
   collectionName: 'components_collection_sections';
   info: {
@@ -62,6 +75,7 @@ export interface CollectionSection extends Struct.ComponentSchema {
       'collection.external-link-ref',
       true
     >;
+    job_descriptions: Schema.Attribute.Component<'collection.job-family', true>;
     order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     single_page_guides: Schema.Attribute.Component<
       'collection.single-page-guide-ref',
@@ -400,6 +414,7 @@ declare module '@strapi/strapi' {
       'collection.detailed-guide-page-ref': CollectionDetailedGuidePageRef;
       'collection.detailed-guide-ref': CollectionDetailedGuideRef;
       'collection.external-link-ref': CollectionExternalLinkRef;
+      'collection.job-family': CollectionJobFamily;
       'collection.section': CollectionSection;
       'collection.single-page-guide-ref': CollectionSinglePageGuideRef;
       'content.content-section': ContentContentSection;

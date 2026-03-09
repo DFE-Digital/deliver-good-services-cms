@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "redirect_301s",
+  "info": {
+    "singularName": "redirect-301",
+    "pluralName": "redirect-301s",
+    "displayName": "301 Redirects"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "oldPath": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "newPath": {
+      "type": "string",
+      "required": true
+    },
+    "useInterimPage": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

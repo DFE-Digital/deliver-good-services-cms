@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "job_specifications",
+  "info": {
+    "singularName": "job-specification",
+    "pluralName": "job-specifications",
+    "displayName": "Job specification"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "profession": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tags-profession.tags-profession",
+      "inversedBy": "job_specifications"
+    },
+    "roleDescription": {
+      "type": "richtext",
+      "required": true
+    },
+    "skills": {
+      "type": "richtext"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "grade": {
+      "type": "enumeration",
+      "enum": [
+        "EA",
+        "EO",
+        "HEO",
+        "SEO",
+        "G7",
+        "G6",
+        "G6 HoP",
+        "SCS1",
+        "SCS2",
+        "SCS3"
+      ]
+    },
+    "hasCBPAllowance": {
+      "type": "boolean",
+      "required": false,
+      "default": false
+    },
+    "enableWordDocDownload": {
+      "type": "boolean",
+      "default": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    }
+  }
+}

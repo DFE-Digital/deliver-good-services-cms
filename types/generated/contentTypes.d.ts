@@ -662,6 +662,52 @@ export interface ApiHtmlPageHtmlPage extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiJobSpecificationJobSpecification
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'job_specifications';
+  info: {
+    displayName: 'Job specification';
+    pluralName: 'job-specifications';
+    singularName: 'job-specification';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    enableWordDocDownload: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    grade: Schema.Attribute.Enumeration<
+      ['EA', 'EO', 'HEO', 'SEO', 'G7', 'G6', 'G6 HoP', 'SCS1', 'SCS2', 'SCS3']
+    >;
+    hasCBPAllowance: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::job-specification.job-specification'
+    > &
+      Schema.Attribute.Private;
+    profession: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::tags-profession.tags-profession'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    roleDescription: Schema.Attribute.RichText & Schema.Attribute.Required;
+    skills: Schema.Attribute.RichText;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiLifecycleStageLifecycleStage
   extends Struct.CollectionTypeSchema {
   collectionName: 'lifecycle_stages';
@@ -897,6 +943,39 @@ export interface ApiPhasePhase extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiRedirect301Redirect301 extends Struct.CollectionTypeSchema {
+  collectionName: 'redirect_301s';
+  info: {
+    displayName: '301 Redirects';
+    pluralName: 'redirect-301s';
+    singularName: 'redirect-301';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::redirect-301.redirect-301'
+    > &
+      Schema.Attribute.Private;
+    newPath: Schema.Attribute.String & Schema.Attribute.Required;
+    oldPath: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    useInterimPage: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
   };
 }
 
@@ -1169,12 +1248,17 @@ export interface ApiTagsProfessionTagsProfession
       'manyToOne',
       'api::detailed-guide-page.detailed-guide-page'
     >;
+    job_specifications: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::job-specification.job-specification'
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::tags-profession.tags-profession'
     > &
       Schema.Attribute.Private;
+    plural: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
@@ -1807,11 +1891,13 @@ declare module '@strapi/strapi' {
       'api::detailed-guide.detailed-guide': ApiDetailedGuideDetailedGuide;
       'api::external-link.external-link': ApiExternalLinkExternalLink;
       'api::html-page.html-page': ApiHtmlPageHtmlPage;
+      'api::job-specification.job-specification': ApiJobSpecificationJobSpecification;
       'api::lifecycle-stage.lifecycle-stage': ApiLifecycleStageLifecycleStage;
       'api::lifecycle.lifecycle': ApiLifecycleLifecycle;
       'api::navigation-item.navigation-item': ApiNavigationItemNavigationItem;
       'api::output.output': ApiOutputOutput;
       'api::phase.phase': ApiPhasePhase;
+      'api::redirect-301.redirect-301': ApiRedirect301Redirect301;
       'api::redirector.redirector': ApiRedirectorRedirector;
       'api::role.role': ApiRoleRole;
       'api::single-page-guide.single-page-guide': ApiSinglePageGuideSinglePageGuide;

@@ -36,6 +36,11 @@
       "type": "component",
       "component": "collection.single-page-guide-ref",
       "repeatable": true
+    },
+    "job_descriptions": {
+      "type": "component",
+      "component": "collection.job-family",
+      "repeatable": true
     }
   },
   "config": {}

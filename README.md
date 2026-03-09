@@ -63,13 +63,13 @@ Use when you can’t run both at once or want a file backup.
 
 #### Local → Dev
 
-Push data from **Local** (port 1300, local PostgreSQL) into **Dev** (port 1337, remote PostgreSQL):
+Push data from **Local** (localhost, local PostgreSQL) into **Dev** (Azure):
 
-- **Local**: `npm run local` → http://localhost:1300/admin, uses `.env` (local PG).
-- **Dev**: `npm run dev` → http://localhost:1337/admin, uses `.env.development` (remote PG).
+- **Local**: `npm run local` → http://localhost:1337, uses `.env` (local PG).
+- **Dev**: https://s186d01-goodservices-cms.azurewebsites.net (uses `.env.development`, remote PG).
 
-1. Start **Dev** so it’s running: `npm run dev` (or `npm run start:dev`).
-2. In the **Dev** admin (http://localhost:1337/admin), create a Transfer Token: Settings → Transfer Tokens → Create, then copy the token.
+1. Ensure **Dev** is running (the Azure instance must be up).
+2. In the **Dev** admin (https://s186d01-goodservices-cms.azurewebsites.net/admin), create a Transfer Token: Settings → Transfer Tokens → Create, then copy the token.
 3. From the project root (Local DB must be reachable), run:
 
    ```bash
@@ -77,8 +77,6 @@ Push data from **Local** (port 1300, local PostgreSQL) into **Dev** (port 1337, 
    ```
 
 4. Confirm the prompt (this **replaces** all data and assets on Dev with Local data).
-
-To use a different Dev URL: `dotenv -e .env -- strapi transfer --to http://your-dev-host:1337/admin --to-token $DEV_TRANSFER_TOKEN`
 
 ### `develop`
 

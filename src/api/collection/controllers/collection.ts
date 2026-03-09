@@ -8,6 +8,7 @@ const FIELDS_GUIDE = ['title', 'slug', 'metaDescription'] as const;
 const FIELDS_PAGE = ['title', 'slug', 'metaDescription'] as const;
 const FIELDS_SPG = ['title', 'slug', 'metaDescription'] as const;
 const FIELDS_EXT = ['title', 'url', 'newTab', 'description'] as const;
+const FIELDS_JOB_SPEC = ['title', 'slug'] as const;
 
 type Section = {
   order?: number;
@@ -17,6 +18,7 @@ type Section = {
   detailed_guide_pages?: Array<{ detailed_guide_page?: unknown }>;
   external_links?: Array<{ external_link?: unknown }>;
   single_page_guides?: Array<{ single_page_guide?: unknown }>;
+  job_descriptions?: Array<{ job_specifications?: unknown[] }>;
 };
 
 function getDocumentId(rel: string | object | null | undefined): string | null {
@@ -57,6 +59,8 @@ export default factories.createCoreController('api::collection.collection', ({ s
             'external_links.external_link',
             'single_page_guides',
             'single_page_guides.single_page_guide',
+            'job_descriptions',
+            'job_descriptions.job_specifications',
           ] as const,
         },
         relatedContent: true,
@@ -177,6 +181,31 @@ export default factories.createCoreController('api::collection.collection', ({ s
             });
         } catch {
           /* skip */
+        }
+      }
+
+      for (const jobFamily of section.job_descriptions ?? []) {
+        const specs = Array.isArray(jobFamily.job_specifications) ? jobFamily.job_specifications : [];
+        for (const ref of specs) {
+          const specId = getDocumentId(ref as string | object | null);
+          if (!specId) continue;
+          try {
+            const doc = await strapi.documents('api::job-specification.job-specification').findOne({
+              documentId: specId,
+              status: 'published',
+              fields: [...FIELDS_JOB_SPEC],
+            });
+            if (doc)
+              items.push({
+                type: 'job_specification',
+                title: (doc as Record<string, unknown>).title,
+                slug: (doc as Record<string, unknown>).slug,
+                metaDescription: null,
+                url: `/guidance/job-specifications/${(doc as Record<string, unknown>).slug}`,
+              });
+          } catch {
+            /* skip */
+          }
         }
       }
 

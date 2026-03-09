@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_collection_job_families",
+  "info": {
+    "displayName": "job_family"
+  },
+  "options": {},
+  "attributes": {
+    "job_specifications": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::job-specification.job-specification"
+    }
+  },
+  "config": {}
+}
