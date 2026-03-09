@@ -1,0 +1,55 @@
+{
+  "kind": "collectionType",
+  "collectionName": "page_notifications",
+  "info": {
+    "singularName": "page-notification",
+    "pluralName": "page-notifications",
+    "displayName": "Page notification"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "message": {
+      "type": "richtext",
+      "required": true
+    },
+    "detailed_guides": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::detailed-guide.detailed-guide"
+    },
+    "detailed_guide_pages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::detailed-guide-page.detailed-guide-page"
+    },
+    "single_page_guides": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::single-page-guide.single-page-guide"
+    },
+    "collections": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::collection.collection"
+    },
+    "validFrom": {
+      "type": "datetime",
+      "required": true
+    },
+    "validTo": {
+      "type": "datetime",
+      "required": true
+    },
+    "enabled": {
+      "type": "boolean",
+      "required": true
+    }
+  }
+}

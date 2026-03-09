@@ -527,6 +527,7 @@ export interface ApiDetailedGuidePageDetailedGuidePage
     >;
     publishedAt: Schema.Attribute.DateTime;
     relatedContent: Schema.Attribute.Component<'content.related-content', true>;
+    showLastUpdatedDateOnPage: Schema.Attribute.Boolean;
     slug: Schema.Attribute.UID<'title'>;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -580,6 +581,7 @@ export interface ApiDetailedGuideDetailedGuide
       }>;
     publishedAt: Schema.Attribute.DateTime;
     relatedContent: Schema.Attribute.Component<'content.related-content', true>;
+    showLastUpdatedDateOnPage: Schema.Attribute.Boolean;
     slug: Schema.Attribute.UID<'title'>;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -888,6 +890,55 @@ export interface ApiOutputOutput extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiPageNotificationPageNotification
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'page_notifications';
+  info: {
+    displayName: 'Page notification';
+    pluralName: 'page-notifications';
+    singularName: 'page-notification';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    collections: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::collection.collection'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    detailed_guide_pages: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::detailed-guide-page.detailed-guide-page'
+    >;
+    detailed_guides: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::detailed-guide.detailed-guide'
+    >;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::page-notification.page-notification'
+    > &
+      Schema.Attribute.Private;
+    message: Schema.Attribute.RichText & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    single_page_guides: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::single-page-guide.single-page-guide'
+    >;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    validFrom: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    validTo: Schema.Attribute.DateTime & Schema.Attribute.Required;
+  };
+}
+
 export interface ApiPhasePhase extends Struct.CollectionTypeSchema {
   collectionName: 'phases';
   info: {
@@ -1090,6 +1141,7 @@ export interface ApiSinglePageGuideSinglePageGuide
     publishedAt: Schema.Attribute.DateTime;
     relatedContent: Schema.Attribute.Component<'content.related-content', true>;
     reviewComments: Schema.Attribute.Text;
+    showLastUpdatedDateOnPage: Schema.Attribute.Boolean;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -1896,6 +1948,7 @@ declare module '@strapi/strapi' {
       'api::lifecycle.lifecycle': ApiLifecycleLifecycle;
       'api::navigation-item.navigation-item': ApiNavigationItemNavigationItem;
       'api::output.output': ApiOutputOutput;
+      'api::page-notification.page-notification': ApiPageNotificationPageNotification;
       'api::phase.phase': ApiPhasePhase;
       'api::redirect-301.redirect-301': ApiRedirect301Redirect301;
       'api::redirector.redirector': ApiRedirectorRedirector;

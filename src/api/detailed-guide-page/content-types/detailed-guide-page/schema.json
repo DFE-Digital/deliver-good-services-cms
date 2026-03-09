@@ -65,6 +65,9 @@
     "hideGuidePagesNav": {
       "type": "boolean",
       "default": false
+    },
+    "showLastUpdatedDateOnPage": {
+      "type": "boolean"
     }
   }
 }

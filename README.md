@@ -78,6 +78,20 @@ Push data from **Local** (localhost, local PostgreSQL) into **Dev** (Azure):
 
 4. Confirm the prompt (this **replaces** all data and assets on Dev with Local data).
 
+#### Dev → Local
+
+Pull data from **Dev** (Azure) into **Local** (localhost, local PostgreSQL):
+
+1. Ensure **Dev** is running (the Azure instance must be up).
+2. In the **Dev** admin (https://s186d01-goodservices-cms.azurewebsites.net/admin), create a Transfer Token if needed: Settings → Transfer Tokens → Create, then copy the token.
+3. From the project root (Local Strapi should not be running, or will be restarted after), run:
+
+   ```bash
+   DEV_TRANSFER_TOKEN=your-dev-token npm run promote:dev-to-local
+   ```
+
+4. Confirm the prompt (this **replaces** all data and assets on Local with Dev data).
+
 ### `develop`
 
 Start your Strapi application with autoReload enabled (development env). [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-develop)

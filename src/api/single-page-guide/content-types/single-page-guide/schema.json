@@ -73,6 +73,10 @@
       "relation": "manyToOne",
       "target": "api::collection.collection",
       "inversedBy": "single_page_guides"
+    },
+    "showLastUpdatedDateOnPage": {
+      "type": "boolean",
+      "required": false
     }
   }
 }
