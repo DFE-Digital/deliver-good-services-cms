@@ -18,7 +18,7 @@
     "export:test": "dotenv -e .env.test -- strapi export -f export-test",
     "import:prod": "dotenv -e .env.production -- strapi import",
     "promote:local-to-dev": "dotenv -e .env -- strapi transfer --to https://s186d01-goodservices-cms.azurewebsites.net/admin --to-token ${DEV_TRANSFER_TOKEN} --verbose",
-    "promote:dev-to-local": "dotenv -e .env -- strapi transfer --from https://s186d01-goodservices-cms.azurewebsites.net/admin --from-token ${DEV_TRANSFER_TOKEN} --verbose",
+    "promote:dev-to-local": "dotenv -e .env -- sh -c 'strapi transfer --from https://s186d01-goodservices-cms.azurewebsites.net/admin --from-token \"$DEV_TRANSFER_TOKEN\" --verbose'",
     "promote:transfer": "dotenv -e .env.test -- strapi transfer --to ${PRODUCTION_ADMIN_URL} --to-token ${PRODUCTION_TRANSFER_TOKEN}",
     "strapi": "strapi",
     "upgrade": "npx @strapi/upgrade latest",

@@ -83,14 +83,24 @@ Push data from **Local** (localhost, local PostgreSQL) into **Dev** (Azure):
 Pull data from **Dev** (Azure) into **Local** (localhost, local PostgreSQL):
 
 1. Ensure **Dev** is running (the Azure instance must be up).
-2. In the **Dev** admin (https://s186d01-goodservices-cms.azurewebsites.net/admin), create a Transfer Token if needed: Settings → Transfer Tokens → Create, then copy the token.
-3. From the project root (Local Strapi should not be running, or will be restarted after), run:
+2. **Start Local Strapi** (the destination must be running): from the `cms` directory run `npm run local` in one terminal and leave it running.
+3. In the **Dev** admin (https://s186d01-goodservices-cms.azurewebsites.net/admin), create a Transfer Token: Settings → Transfer Tokens → Create. Set the token type to **Pull** or **Full Access** (not Push — Pull is required when Dev is the *source*). Copy the token and put it in `cms/.env` as `DEV_TRANSFER_TOKEN=...` or pass it when running the command.
+4. In another terminal, from the `cms` directory, run:
 
    ```bash
+   npm run promote:dev-to-local
+   # or pass the token inline:
    DEV_TRANSFER_TOKEN=your-dev-token npm run promote:dev-to-local
    ```
 
-4. Confirm the prompt (this **replaces** all data and assets on Local with Dev data).
+5. Confirm the prompt (this **replaces** all data and assets on Local with Dev data).
+
+**Troubleshooting:**
+
+- **"Authorization Error"** — The token on Dev must have type **Pull** or **Full Access** (not Push). Push-only tokens work when Dev is the *destination* (local-to-dev); for dev-to-local, Dev is the *source*, so the token needs Pull or Full Access. Create a new token in Dev admin with Pull/Full Access, or edit the existing token and change its type.
+- **"Data transfer is not enabled on the remote host"** — Dev (Azure) must have transfer enabled: ensure `STRAPI_DISABLE_REMOTE_DATA_TRANSFER` is not set to `true` on the Dev server, and that Dev has `TRANSFER_TOKEN_SALT` configured.
+- **Connection refused / timeout** — Check Dev is up and the URL is correct. Ensure Local Strapi is running (destination must be running for pull).
+- **Empty or wrong data** — Ensure the transfer token was created in the **Dev** admin (source), and that it has **Pull** or **Full Access** permission.
 
 ### `develop`
 

@@ -28,17 +28,29 @@
       "required": true,
       "default": true
     },
-    "detailed_guide_page": {
+    "detailed_guide_pages": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::detailed-guide-page.detailed-guide-page",
-      "inversedBy": "professionsApplicable"
+      "mappedBy": "applicableProfessions"
     },
     "job_specifications": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::job-specification.job-specification",
       "mappedBy": "profession"
+    },
+    "collections": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::collection.collection",
+      "mappedBy": "applicableProfessions"
+    },
+    "detailed_guides": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::detailed-guide.detailed-guide",
+      "mappedBy": "applicableProfessions"
     }
   }
 }

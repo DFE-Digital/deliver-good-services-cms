@@ -20,6 +20,15 @@
       "type": "uid",
       "targetField": "title"
     },
+    "metaDescription": {
+      "type": "text",
+      "maxLength": 240,
+      "required": true
+    },
+    "body": {
+      "type": "richtext",
+      "required": true
+    },
     "detailed_guide_pages": {
       "type": "relation",
       "relation": "oneToMany",
@@ -31,34 +40,45 @@
       "component": "content.related-content",
       "repeatable": true
     },
-    "metaDescription": {
-      "type": "text",
-      "maxLength": 240,
-      "required": true
-    },
-    "userNeeds": {
-      "type": "component",
-      "component": "content.user-need",
-      "repeatable": true
-    },
-    "applicable_phases": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::phase.phase",
-      "description": "Phases this guide applies to (for phase page listing)"
-    },
-    "guidePagesOnRightSide": {
-      "type": "boolean",
-      "default": false
-    },
     "collection": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::collection.collection",
       "inversedBy": "detailed_guides"
     },
+    "applicablePhases": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::phase.phase",
+      "mappedBy": "detailed_guides"
+    },
+    "applicableProfessions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tags-profession.tags-profession",
+      "inversedBy": "detailed_guides"
+    },
     "showLastUpdatedDateOnPage": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
+    },
+    "lastReviewedDate": {
+      "type": "date"
+    },
+    "userNeeds": {
+      "type": "component",
+      "component": "content.user-need",
+      "repeatable": true
+    },
+    "contentOwner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::content-owner.content-owner",
+      "inversedBy": "detailed_guides"
+    },
+    "hideContentsOnPrimaryPage": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

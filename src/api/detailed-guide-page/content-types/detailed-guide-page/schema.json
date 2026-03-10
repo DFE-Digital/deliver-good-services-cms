@@ -32,42 +32,49 @@
       "type": "richtext",
       "required": true
     },
+    "relatedContent": {
+      "type": "component",
+      "component": "content.related-content",
+      "repeatable": true
+    },
     "detailed_guide": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::detailed-guide.detailed-guide",
       "inversedBy": "detailed_guide_pages"
     },
-    "relatedContent": {
-      "type": "component",
-      "component": "content.related-content",
-      "repeatable": true
+    "applicablePhases": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tags-phase.tags-phase",
+      "mappedBy": "detailed_guide_pages"
     },
-    "userNeeds": {
-      "type": "component",
-      "component": "content.user-need",
-      "repeatable": true
+    "applicableProfessions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tags-profession.tags-profession",
+      "inversedBy": "detailed_guide_pages"
+    },
+    "hideTitleAndDescription": {
+      "type": "boolean"
     },
     "hideContents": {
       "type": "boolean",
       "required": false,
       "default": false
     },
-    "hideTitleAndDescription": {
-      "type": "boolean"
-    },
-    "professionsApplicable": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::tags-profession.tags-profession",
-      "mappedBy": "detailed_guide_page"
-    },
     "hideGuidePagesNav": {
       "type": "boolean",
       "default": false
     },
     "showLastUpdatedDateOnPage": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
+    },
+    "userNeeds": {
+      "type": "component",
+      "component": "content.user-need",
+      "repeatable": true
     }
   }
 }

@@ -58,7 +58,7 @@ export interface CollectionJobFamily extends Struct.ComponentSchema {
 export interface CollectionSection extends Struct.ComponentSchema {
   collectionName: 'components_collection_sections';
   info: {
-    description: 'One section in a collection: title, description, and links (detailed guide, external links, single page guides)';
+    description: 'One section in a collection: title, description, and links (detailed guide, external links)';
     displayName: 'Section';
   };
   attributes: {
@@ -77,25 +77,7 @@ export interface CollectionSection extends Struct.ComponentSchema {
     >;
     job_descriptions: Schema.Attribute.Component<'collection.job-family', true>;
     order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
-    single_page_guides: Schema.Attribute.Component<
-      'collection.single-page-guide-ref',
-      true
-    >;
     title: Schema.Attribute.String & Schema.Attribute.Required;
-  };
-}
-
-export interface CollectionSinglePageGuideRef extends Struct.ComponentSchema {
-  collectionName: 'components_collection_single_page_guide_refs';
-  info: {
-    description: 'One single page guide in a section';
-    displayName: 'Single page guide ref';
-  };
-  attributes: {
-    single_page_guide: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::single-page-guide.single-page-guide'
-    >;
   };
 }
 
@@ -108,10 +90,6 @@ export interface ContentContentSection extends Struct.ComponentSchema {
     detailed_guides: Schema.Attribute.Relation<
       'oneToMany',
       'api::detailed-guide.detailed-guide'
-    >;
-    single_page_guides: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::single-page-guide.single-page-guide'
     >;
   };
 }
@@ -416,7 +394,6 @@ declare module '@strapi/strapi' {
       'collection.external-link-ref': CollectionExternalLinkRef;
       'collection.job-family': CollectionJobFamily;
       'collection.section': CollectionSection;
-      'collection.single-page-guide-ref': CollectionSinglePageGuideRef;
       'content.content-section': ContentContentSection;
       'content.related-content': ContentRelatedContent;
       'content.user-need': ContentUserNeed;

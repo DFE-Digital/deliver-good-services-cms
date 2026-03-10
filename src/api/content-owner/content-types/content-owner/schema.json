@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_owners",
+  "info": {
+    "singularName": "content-owner",
+    "pluralName": "content-owners",
+    "displayName": "Content owner"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "detailed_guides": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::detailed-guide.detailed-guide",
+      "mappedBy": "contentOwner"
+    },
+    "informationPage": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::redirector.redirector"
+    }
+  }
+}

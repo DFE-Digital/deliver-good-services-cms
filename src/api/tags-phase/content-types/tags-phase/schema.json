@@ -24,17 +24,20 @@
     "active": {
       "type": "boolean"
     },
-    "single_page_guide": {
+    "collections": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::single-page-guide.single-page-guide",
-      "inversedBy": "phaseTag"
-    },
-    "collection": {
-      "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::collection.collection",
-      "inversedBy": "phaseTag"
+      "mappedBy": "applicablePhases"
+    },
+    "order": {
+      "type": "integer"
+    },
+    "detailed_guide_pages": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::detailed-guide-page.detailed-guide-page",
+      "inversedBy": "applicablePhases"
     }
   }
 }

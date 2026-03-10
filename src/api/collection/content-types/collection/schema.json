@@ -30,11 +30,11 @@
     "body": {
       "type": "richtext"
     },
-    "phaseTag": {
+    "applicablePhases": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::tags-phase.tags-phase",
-      "mappedBy": "collection"
+      "inversedBy": "collections"
     },
     "sections": {
       "type": "component",
@@ -57,11 +57,19 @@
       "target": "api::detailed-guide.detailed-guide",
       "mappedBy": "collection"
     },
-    "single_page_guides": {
+    "applicableProfessions": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::single-page-guide.single-page-guide",
-      "mappedBy": "collection"
+      "relation": "manyToMany",
+      "target": "api::tags-profession.tags-profession",
+      "inversedBy": "collections"
+    },
+    "lastReviewedDate": {
+      "type": "date"
+    },
+    "lastReviewedBy": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
     }
   }
 }

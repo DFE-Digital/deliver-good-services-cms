@@ -29,11 +29,6 @@
       "relation": "oneToMany",
       "target": "api::detailed-guide-page.detailed-guide-page"
     },
-    "single_page_guides": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::single-page-guide.single-page-guide"
-    },
     "collections": {
       "type": "relation",
       "relation": "oneToMany",

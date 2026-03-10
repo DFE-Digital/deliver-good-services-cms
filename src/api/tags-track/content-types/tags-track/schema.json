@@ -30,8 +30,7 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::phase.phase",
-      "mappedBy": "trackTags",
-      "description": "Phases that use this track"
+      "mappedBy": "trackTags"
     }
   }
 }

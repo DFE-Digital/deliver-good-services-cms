@@ -441,6 +441,14 @@ export interface ApiCollectionCollection extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    applicablePhases: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::tags-phase.tags-phase'
+    >;
+    applicableProfessions: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::tags-profession.tags-profession'
+    >;
     body: Schema.Attribute.RichText;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -449,6 +457,11 @@ export interface ApiCollectionCollection extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::detailed-guide.detailed-guide'
     >;
+    lastReviewedBy: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    lastReviewedDate: Schema.Attribute.Date;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -460,17 +473,9 @@ export interface ApiCollectionCollection extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 240;
       }>;
-    phaseTag: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::tags-phase.tags-phase'
-    >;
     publishedAt: Schema.Attribute.DateTime;
     relatedContent: Schema.Attribute.Component<'content.related-content', true>;
     sections: Schema.Attribute.Component<'collection.section', true>;
-    single_page_guides: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::single-page-guide.single-page-guide'
-    >;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -482,6 +487,44 @@ export interface ApiCollectionCollection extends Struct.CollectionTypeSchema {
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     userNeeds: Schema.Attribute.Component<'content.user-need', true>;
+  };
+}
+
+export interface ApiContentOwnerContentOwner
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'content_owners';
+  info: {
+    displayName: 'Content owner';
+    pluralName: 'content-owners';
+    singularName: 'content-owner';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    detailed_guides: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::detailed-guide.detailed-guide'
+    >;
+    informationPage: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::redirector.redirector'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::content-owner.content-owner'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'title'>;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -497,6 +540,14 @@ export interface ApiDetailedGuidePageDetailedGuidePage
     draftAndPublish: true;
   };
   attributes: {
+    applicablePhases: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::tags-phase.tags-phase'
+    >;
+    applicableProfessions: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::tags-profession.tags-profession'
+    >;
     beforeContents: Schema.Attribute.RichText;
     body: Schema.Attribute.RichText & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
@@ -521,13 +572,10 @@ export interface ApiDetailedGuidePageDetailedGuidePage
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 240;
       }>;
-    professionsApplicable: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::tags-profession.tags-profession'
-    >;
     publishedAt: Schema.Attribute.DateTime;
     relatedContent: Schema.Attribute.Component<'content.related-content', true>;
-    showLastUpdatedDateOnPage: Schema.Attribute.Boolean;
+    showLastUpdatedDateOnPage: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
     slug: Schema.Attribute.UID<'title'>;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -551,13 +599,22 @@ export interface ApiDetailedGuideDetailedGuide
     draftAndPublish: true;
   };
   attributes: {
-    applicable_phases: Schema.Attribute.Relation<
+    applicablePhases: Schema.Attribute.Relation<
       'manyToMany',
       'api::phase.phase'
     >;
+    applicableProfessions: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::tags-profession.tags-profession'
+    >;
+    body: Schema.Attribute.RichText & Schema.Attribute.Required;
     collection: Schema.Attribute.Relation<
       'manyToOne',
       'api::collection.collection'
+    >;
+    contentOwner: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::content-owner.content-owner'
     >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -566,8 +623,9 @@ export interface ApiDetailedGuideDetailedGuide
       'oneToMany',
       'api::detailed-guide-page.detailed-guide-page'
     >;
-    guidePagesOnRightSide: Schema.Attribute.Boolean &
+    hideContentsOnPrimaryPage: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
+    lastReviewedDate: Schema.Attribute.Date;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -581,7 +639,8 @@ export interface ApiDetailedGuideDetailedGuide
       }>;
     publishedAt: Schema.Attribute.DateTime;
     relatedContent: Schema.Attribute.Component<'content.related-content', true>;
-    showLastUpdatedDateOnPage: Schema.Attribute.Boolean;
+    showLastUpdatedDateOnPage: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
     slug: Schema.Attribute.UID<'title'>;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -846,10 +905,6 @@ export interface ApiNavigationItemNavigationItem
       'api::navigation-item.navigation-item'
     >;
     publishedAt: Schema.Attribute.DateTime;
-    single_page_guide: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::single-page-guide.single-page-guide'
-    >;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -926,10 +981,6 @@ export interface ApiPageNotificationPageNotification
       Schema.Attribute.Private;
     message: Schema.Attribute.RichText & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
-    single_page_guides: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::single-page-guide.single-page-guide'
-    >;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -956,6 +1007,10 @@ export interface ApiPhasePhase extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    detailed_guides: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::detailed-guide.detailed-guide'
+    >;
     duration: Schema.Attribute.String;
     hint: Schema.Attribute.Text;
     intent: Schema.Attribute.RichText;
@@ -1093,69 +1148,6 @@ export interface ApiRoleRole extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiSinglePageGuideSinglePageGuide
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'single_page_guides';
-  info: {
-    displayName: 'Single page guide';
-    pluralName: 'single-page-guides';
-    singularName: 'single-page-guide';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    applicable_phases: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::phase.phase'
-    >;
-    body: Schema.Attribute.RichText & Schema.Attribute.Required;
-    collection: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::collection.collection'
-    >;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    lastReviewBy: Schema.Attribute.Relation<
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
-    lastReviewDate: Schema.Attribute.Date;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::single-page-guide.single-page-guide'
-    > &
-      Schema.Attribute.Private;
-    metaDescription: Schema.Attribute.Text &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 240;
-      }>;
-    nextReviewDate: Schema.Attribute.Date;
-    phaseTag: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::tags-phase.tags-phase'
-    >;
-    publishedAt: Schema.Attribute.DateTime;
-    relatedContent: Schema.Attribute.Component<'content.related-content', true>;
-    reviewComments: Schema.Attribute.Text;
-    showLastUpdatedDateOnPage: Schema.Attribute.Boolean;
-    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    title: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 60;
-      }>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    userNeeds: Schema.Attribute.Component<'content.user-need', true>;
-  };
-}
-
 export interface ApiStageTaskPlacementStageTaskPlacement
   extends Struct.CollectionTypeSchema {
   collectionName: 'stage_task_placements';
@@ -1250,24 +1242,25 @@ export interface ApiTagsPhaseTagsPhase extends Struct.CollectionTypeSchema {
   };
   attributes: {
     active: Schema.Attribute.Boolean;
-    collection: Schema.Attribute.Relation<
-      'manyToOne',
+    collections: Schema.Attribute.Relation<
+      'manyToMany',
       'api::collection.collection'
     >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    detailed_guide_pages: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::detailed-guide-page.detailed-guide-page'
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::tags-phase.tags-phase'
     > &
       Schema.Attribute.Private;
+    order: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
-    single_page_guide: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::single-page-guide.single-page-guide'
-    >;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -1293,12 +1286,20 @@ export interface ApiTagsProfessionTagsProfession
     active: Schema.Attribute.Boolean &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<true>;
+    collections: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::collection.collection'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    detailed_guide_page: Schema.Attribute.Relation<
-      'manyToOne',
+    detailed_guide_pages: Schema.Attribute.Relation<
+      'manyToMany',
       'api::detailed-guide-page.detailed-guide-page'
+    >;
+    detailed_guides: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::detailed-guide.detailed-guide'
     >;
     job_specifications: Schema.Attribute.Relation<
       'oneToMany',
@@ -1911,10 +1912,6 @@ export interface PluginUsersPermissionsUser
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    single_page_guide: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::single-page-guide.single-page-guide'
-    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1939,6 +1936,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::collection.collection': ApiCollectionCollection;
+      'api::content-owner.content-owner': ApiContentOwnerContentOwner;
       'api::detailed-guide-page.detailed-guide-page': ApiDetailedGuidePageDetailedGuidePage;
       'api::detailed-guide.detailed-guide': ApiDetailedGuideDetailedGuide;
       'api::external-link.external-link': ApiExternalLinkExternalLink;
@@ -1953,7 +1951,6 @@ declare module '@strapi/strapi' {
       'api::redirect-301.redirect-301': ApiRedirect301Redirect301;
       'api::redirector.redirector': ApiRedirectorRedirector;
       'api::role.role': ApiRoleRole;
-      'api::single-page-guide.single-page-guide': ApiSinglePageGuideSinglePageGuide;
       'api::stage-task-placement.stage-task-placement': ApiStageTaskPlacementStageTaskPlacement;
       'api::standard.standard': ApiStandardStandard;
       'api::tags-phase.tags-phase': ApiTagsPhaseTagsPhase;

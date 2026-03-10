@@ -6,7 +6,10 @@
     "pluralName": "navigation-items",
     "displayName": "Navigation item"
   },
-  "options": { "draftAndPublish": true },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
   "attributes": {
     "title": {
       "type": "string",
@@ -38,11 +41,6 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::detailed-guide.detailed-guide"
-    },
-    "single_page_guide": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::single-page-guide.single-page-guide"
     },
     "html_page": {
       "type": "relation",

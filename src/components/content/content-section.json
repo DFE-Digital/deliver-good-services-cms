@@ -9,11 +9,6 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::detailed-guide.detailed-guide"
-    },
-    "single_page_guides": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::single-page-guide.single-page-guide"
     }
   },
   "config": {}

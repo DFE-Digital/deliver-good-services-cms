@@ -6,7 +6,6 @@ import { factories } from '@strapi/strapi';
 
 const FIELDS_GUIDE = ['title', 'slug', 'metaDescription'] as const;
 const FIELDS_PAGE = ['title', 'slug', 'metaDescription'] as const;
-const FIELDS_SPG = ['title', 'slug', 'metaDescription'] as const;
 const FIELDS_EXT = ['title', 'url', 'newTab', 'description'] as const;
 const FIELDS_JOB_SPEC = ['title', 'slug'] as const;
 
@@ -17,7 +16,6 @@ type Section = {
   detailed_guides?: Array<{ detailed_guide?: unknown }>;
   detailed_guide_pages?: Array<{ detailed_guide_page?: unknown }>;
   external_links?: Array<{ external_link?: unknown }>;
-  single_page_guides?: Array<{ single_page_guide?: unknown }>;
   job_descriptions?: Array<{ job_specifications?: unknown[] }>;
 };
 
@@ -37,7 +35,7 @@ export default factories.createCoreController('api::collection.collection', ({ s
   /**
    * GET /collections/by-slug/:slug
    * Returns one collection with sections (title, description, items). Each section's items are built from
-   * detailed_guide, detailed_guide_page, external_links, single_page_guides. Only slim fields (no body).
+   * detailed_guide, detailed_guide_page, external_links. Only slim fields (no body).
    */
   async findBySlug(ctx) {
     const { slug } = ctx.params as { slug: string };
@@ -57,8 +55,6 @@ export default factories.createCoreController('api::collection.collection', ({ s
             'detailed_guide_pages.detailed_guide_page',
             'external_links',
             'external_links.external_link',
-            'single_page_guides',
-            'single_page_guides.single_page_guide',
             'job_descriptions',
             'job_descriptions.job_specifications',
           ] as const,
@@ -156,28 +152,6 @@ export default factories.createCoreController('api::collection.collection', ({ s
               metaDescription: (doc as Record<string, unknown>).description,
               url: (doc as Record<string, unknown>).url,
               newTab: (doc as Record<string, unknown>).newTab,
-            });
-        } catch {
-          /* skip */
-        }
-      }
-
-      for (const ref of section.single_page_guides ?? []) {
-        const spgId = getDocumentId(ref.single_page_guide as string | object | null);
-        if (!spgId) continue;
-        try {
-          const doc = await strapi.documents('api::single-page-guide.single-page-guide').findOne({
-            documentId: spgId,
-            status: 'published',
-            fields: [...FIELDS_SPG],
-          });
-          if (doc)
-            items.push({
-              type: 'single_page_guide',
-              title: (doc as Record<string, unknown>).title,
-              slug: (doc as Record<string, unknown>).slug,
-              metaDescription: (doc as Record<string, unknown>).metaDescription,
-              url: `/guidance/${(doc as Record<string, unknown>).slug}`,
             });
         } catch {
           /* skip */
