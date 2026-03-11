@@ -450,6 +450,10 @@ export interface ApiCollectionCollection extends Struct.CollectionTypeSchema {
       'api::tags-profession.tags-profession'
     >;
     body: Schema.Attribute.RichText;
+    contentOwner: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::content-owner.content-owner'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -475,6 +479,7 @@ export interface ApiCollectionCollection extends Struct.CollectionTypeSchema {
       }>;
     publishedAt: Schema.Attribute.DateTime;
     relatedContent: Schema.Attribute.Component<'content.related-content', true>;
+    relatedFiles: Schema.Attribute.Media<'files', true>;
     sections: Schema.Attribute.Component<'collection.section', true>;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     title: Schema.Attribute.String &
@@ -502,6 +507,10 @@ export interface ApiContentOwnerContentOwner
     draftAndPublish: true;
   };
   attributes: {
+    collections: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::collection.collection'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -574,6 +583,7 @@ export interface ApiDetailedGuidePageDetailedGuidePage
       }>;
     publishedAt: Schema.Attribute.DateTime;
     relatedContent: Schema.Attribute.Component<'content.related-content', true>;
+    relatedFiles: Schema.Attribute.Media<'files', true>;
     showLastUpdatedDateOnPage: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     slug: Schema.Attribute.UID<'title'>;
@@ -639,6 +649,7 @@ export interface ApiDetailedGuideDetailedGuide
       }>;
     publishedAt: Schema.Attribute.DateTime;
     relatedContent: Schema.Attribute.Component<'content.related-content', true>;
+    relatedFiles: Schema.Attribute.Media<'files', true>;
     showLastUpdatedDateOnPage: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     slug: Schema.Attribute.UID<'title'>;

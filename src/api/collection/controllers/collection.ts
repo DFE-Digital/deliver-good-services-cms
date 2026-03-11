@@ -60,6 +60,11 @@ export default factories.createCoreController('api::collection.collection', ({ s
           ] as const,
         },
         relatedContent: true,
+        contentOwner: {
+          populate: ['informationPage'],
+        },
+        applicableProfessions: true,
+        relatedFiles: true,
       },
     });
 
@@ -196,15 +201,29 @@ export default factories.createCoreController('api::collection.collection', ({ s
     const sanitized = await this.sanitizeOutput(collection, ctx);
     const out = Array.isArray(sanitized) ? sanitized[0] : sanitized;
     const outRecord = out as Record<string, unknown> | undefined;
+    const raw = collection as Record<string, unknown>;
     if (outRecord) {
       if (
         (outRecord.relatedContent == null ||
           (Array.isArray(outRecord.relatedContent) && outRecord.relatedContent.length === 0)) &&
-        Array.isArray((collection as Record<string, unknown>).relatedContent)
+        Array.isArray(raw.relatedContent)
       ) {
-        outRecord.relatedContent = (collection as Record<string, unknown>).relatedContent;
+        outRecord.relatedContent = raw.relatedContent;
       }
       outRecord.collection_sections = sections;
+      // Ensure contentOwner and applicableProfessions are in the response (sanitizeOutput may strip them)
+      if (raw.contentOwner != null) {
+        outRecord.contentOwner = raw.contentOwner;
+      }
+      if (raw.applicableProfessions != null) {
+        outRecord.applicableProfessions = raw.applicableProfessions;
+      }
+      if (raw.lastReviewedDate != null) {
+        outRecord.lastReviewedDate = raw.lastReviewedDate;
+      }
+      if (raw.relatedFiles != null) {
+        outRecord.relatedFiles = raw.relatedFiles;
+      }
     }
     ctx.body = { data: Array.isArray(sanitized) ? sanitized : [sanitized] };
   },

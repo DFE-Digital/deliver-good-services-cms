@@ -75,6 +75,13 @@
       "type": "component",
       "component": "content.user-need",
       "repeatable": true
+    },
+    "relatedFiles": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "files"
+      ]
     }
   }
 }

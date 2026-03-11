@@ -70,6 +70,19 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
+    },
+    "contentOwner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::content-owner.content-owner",
+      "inversedBy": "collections"
+    },
+    "relatedFiles": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "files"
+      ]
     }
   }
 }

@@ -79,6 +79,13 @@
     "hideContentsOnPrimaryPage": {
       "type": "boolean",
       "default": false
+    },
+    "relatedFiles": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "files"
+      ]
     }
   }
 }
