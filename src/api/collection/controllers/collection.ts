@@ -218,6 +218,9 @@ export default factories.createCoreController('api::collection.collection', ({ s
       if (raw.applicableProfessions != null) {
         outRecord.applicableProfessions = raw.applicableProfessions;
       }
+      if (raw.showLastReviewedDateOnPage != null) {
+        outRecord.showLastReviewedDateOnPage = raw.showLastReviewedDateOnPage;
+      }
       if (raw.lastReviewedDate != null) {
         outRecord.lastReviewedDate = raw.lastReviewedDate;
       }

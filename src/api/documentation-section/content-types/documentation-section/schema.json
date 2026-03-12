@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "documentation_sections",
+  "info": {
+    "singularName": "documentation-section",
+    "pluralName": "documentation-sections",
+    "displayName": "Documentation section"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "order": {
+      "type": "integer"
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "documentations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::documentation.documentation",
+      "mappedBy": "documentationSection"
+    }
+  }
+}

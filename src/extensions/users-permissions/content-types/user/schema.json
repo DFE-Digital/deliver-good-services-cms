@@ -65,6 +65,12 @@
       "target": "plugin::users-permissions.role",
       "inversedBy": "users",
       "configurable": false
+    },
+    "documentations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::documentation.documentation",
+      "mappedBy": "lastReviewedBy"
     }
   }
 }

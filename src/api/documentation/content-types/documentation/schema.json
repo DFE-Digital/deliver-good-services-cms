@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "documentations",
+  "info": {
+    "singularName": "documentation",
+    "pluralName": "documentations",
+    "displayName": "Documentation"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid"
+    },
+    "metaDescription": {
+      "type": "text"
+    },
+    "body": {
+      "type": "richtext"
+    },
+    "lastReviewedDate": {
+      "type": "date"
+    },
+    "lastReviewedBy": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "documentations"
+    },
+    "documentationSection": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::documentation-section.documentation-section",
+      "inversedBy": "documentations"
+    }
+  }
+}

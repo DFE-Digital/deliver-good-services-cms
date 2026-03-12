@@ -67,9 +67,12 @@
       "type": "boolean",
       "default": false
     },
-    "showLastUpdatedDateOnPage": {
+    "showLastReviewedDateOnPage": {
       "type": "boolean",
       "default": false
+    },
+    "lastReviewedDate": {
+      "type": "date"
     },
     "userNeeds": {
       "type": "component",

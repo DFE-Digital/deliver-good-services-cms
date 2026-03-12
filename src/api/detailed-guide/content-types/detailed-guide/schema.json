@@ -58,7 +58,7 @@
       "target": "api::tags-profession.tags-profession",
       "inversedBy": "detailed_guides"
     },
-    "showLastUpdatedDateOnPage": {
+    "showLastReviewedDateOnPage": {
       "type": "boolean",
       "default": false
     },

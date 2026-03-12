@@ -481,6 +481,8 @@ export interface ApiCollectionCollection extends Struct.CollectionTypeSchema {
     relatedContent: Schema.Attribute.Component<'content.related-content', true>;
     relatedFiles: Schema.Attribute.Media<'files', true>;
     sections: Schema.Attribute.Component<'collection.section', true>;
+    showLastReviewedDateOnPage: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -570,6 +572,7 @@ export interface ApiDetailedGuidePageDetailedGuidePage
     hideGuidePagesNav: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     hideTitleAndDescription: Schema.Attribute.Boolean;
+    lastReviewedDate: Schema.Attribute.Date;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -584,7 +587,7 @@ export interface ApiDetailedGuidePageDetailedGuidePage
     publishedAt: Schema.Attribute.DateTime;
     relatedContent: Schema.Attribute.Component<'content.related-content', true>;
     relatedFiles: Schema.Attribute.Media<'files', true>;
-    showLastUpdatedDateOnPage: Schema.Attribute.Boolean &
+    showLastReviewedDateOnPage: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     slug: Schema.Attribute.UID<'title'>;
     title: Schema.Attribute.String &
@@ -650,7 +653,7 @@ export interface ApiDetailedGuideDetailedGuide
     publishedAt: Schema.Attribute.DateTime;
     relatedContent: Schema.Attribute.Component<'content.related-content', true>;
     relatedFiles: Schema.Attribute.Media<'files', true>;
-    showLastUpdatedDateOnPage: Schema.Attribute.Boolean &
+    showLastReviewedDateOnPage: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     slug: Schema.Attribute.UID<'title'>;
     title: Schema.Attribute.String &
@@ -660,6 +663,83 @@ export interface ApiDetailedGuideDetailedGuide
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     userNeeds: Schema.Attribute.Component<'content.user-need', true>;
+  };
+}
+
+export interface ApiDocumentationSectionDocumentationSection
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'documentation_sections';
+  info: {
+    displayName: 'Documentation section';
+    pluralName: 'documentation-sections';
+    singularName: 'documentation-section';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    documentations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::documentation.documentation'
+    >;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::documentation-section.documentation-section'
+    > &
+      Schema.Attribute.Private;
+    order: Schema.Attribute.Integer;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'title'>;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiDocumentationDocumentation
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'documentations';
+  info: {
+    displayName: 'Documentation';
+    pluralName: 'documentations';
+    singularName: 'documentation';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    body: Schema.Attribute.RichText;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    documentationSection: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::documentation-section.documentation-section'
+    >;
+    lastReviewedBy: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    lastReviewedDate: Schema.Attribute.Date;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::documentation.documentation'
+    > &
+      Schema.Attribute.Private;
+    metaDescription: Schema.Attribute.Text;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1900,6 +1980,10 @@ export interface PluginUsersPermissionsUser
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    documentations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::documentation.documentation'
+    >;
     email: Schema.Attribute.Email &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
@@ -1950,6 +2034,8 @@ declare module '@strapi/strapi' {
       'api::content-owner.content-owner': ApiContentOwnerContentOwner;
       'api::detailed-guide-page.detailed-guide-page': ApiDetailedGuidePageDetailedGuidePage;
       'api::detailed-guide.detailed-guide': ApiDetailedGuideDetailedGuide;
+      'api::documentation-section.documentation-section': ApiDocumentationSectionDocumentationSection;
+      'api::documentation.documentation': ApiDocumentationDocumentation;
       'api::external-link.external-link': ApiExternalLinkExternalLink;
       'api::html-page.html-page': ApiHtmlPageHtmlPage;
       'api::job-specification.job-specification': ApiJobSpecificationJobSpecification;

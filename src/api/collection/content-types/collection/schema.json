@@ -63,6 +63,10 @@
       "target": "api::tags-profession.tags-profession",
       "inversedBy": "collections"
     },
+    "showLastReviewedDateOnPage": {
+      "type": "boolean",
+      "default": false
+    },
     "lastReviewedDate": {
       "type": "date"
     },
