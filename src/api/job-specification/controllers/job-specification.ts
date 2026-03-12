@@ -30,7 +30,7 @@ export default factories.createCoreController(
         status: 'published',
         filters: { slug: { $eq: slug } },
         fields: ['title', 'slug', 'grade', 'roleDescription', 'skills', 'enableWordDocDownload'],
-        populate: { profession: { fields: ['title', 'slug'] } },
+        populate: { profession: { fields: ['title', 'slug', 'plural', 'professionDescription'] } },
       });
 
       if (!doc) {
@@ -38,8 +38,18 @@ export default factories.createCoreController(
       }
 
       const record = doc as Record<string, unknown>;
-      const profession = record.profession as { documentId?: string; slug?: string; title?: string } | null;
-      const professionId = profession?.documentId ?? null;
+      const rawProfession = record.profession as Record<string, unknown> | null;
+      // Strapi may return relation flat or under .attributes; read plural from either
+      const profession = rawProfession
+        ? {
+            documentId: rawProfession.documentId,
+            title: (rawProfession.title ?? (rawProfession.attributes as Record<string, unknown>)?.title) as string | undefined,
+            slug: (rawProfession.slug ?? (rawProfession.attributes as Record<string, unknown>)?.slug) as string | undefined,
+            plural: (rawProfession.plural ?? (rawProfession.attributes as Record<string, unknown>)?.plural) as string | undefined,
+            professionDescription: (rawProfession.professionDescription ?? (rawProfession.attributes as Record<string, unknown>)?.professionDescription) as string | undefined,
+          }
+        : null;
+      const professionId = (profession?.documentId ?? rawProfession?.documentId ?? null) as string | null;
 
       let siblings: Array<{ title: string; slug: string; grade: string | null }> = [];
 
@@ -48,7 +58,7 @@ export default factories.createCoreController(
           .documents('api::job-specification.job-specification')
           .findMany({
             status: 'published',
-            filters: { profession: { documentId: { $eq: professionId } } },
+            filters: { profession: { documentId: { $eq: professionId as string } } },
             fields: ['title', 'slug', 'grade'],
           });
 
@@ -66,7 +76,12 @@ export default factories.createCoreController(
       const outRecord = out as Record<string, unknown> | undefined;
       if (outRecord) {
         outRecord.profession = profession
-          ? { title: profession.title, slug: profession.slug }
+          ? {
+              title: profession.title,
+              slug: profession.slug,
+              plural: profession.plural ?? null,
+              professionDescription: profession.professionDescription ?? null,
+            }
           : null;
         outRecord.siblingJobSpecifications = siblings;
       }

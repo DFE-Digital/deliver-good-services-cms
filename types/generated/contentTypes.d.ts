@@ -1403,6 +1403,7 @@ export interface ApiTagsProfessionTagsProfession
     > &
       Schema.Attribute.Private;
     plural: Schema.Attribute.String;
+    professionDescription: Schema.Attribute.RichText;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;

@@ -15,6 +15,9 @@
       "type": "string",
       "required": true
     },
+    "professionDescription": {
+      "type": "richtext"
+    },
     "plural": {
       "type": "string"
     },
