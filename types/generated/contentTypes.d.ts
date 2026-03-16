@@ -653,8 +653,14 @@ export interface ApiDetailedGuideDetailedGuide
     publishedAt: Schema.Attribute.DateTime;
     relatedContent: Schema.Attribute.Component<'content.related-content', true>;
     relatedFiles: Schema.Attribute.Media<'files', true>;
+    showApplicablePhasesOnPage: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    showApplicableProfessionsOnPage: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
     showLastReviewedDateOnPage: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
+    showOwnerOnPage: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
     slug: Schema.Attribute.UID<'title'>;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
