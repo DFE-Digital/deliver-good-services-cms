@@ -19,7 +19,7 @@
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "s186t01-test" ]
   workflow_dispatch:
 
 concurrency:
