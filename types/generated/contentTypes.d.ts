@@ -539,6 +539,35 @@ export interface ApiContentOwnerContentOwner
   };
 }
 
+export interface ApiCustomAssetCustomAsset extends Struct.SingleTypeSchema {
+  collectionName: 'custom_assets';
+  info: {
+    displayName: 'Custom Asset';
+    pluralName: 'custom-assets';
+    singularName: 'custom-asset';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    css: Schema.Attribute.RichText;
+    javascript: Schema.Attribute.RichText;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::custom-asset.custom-asset'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiDetailedGuidePageDetailedGuidePage
   extends Struct.CollectionTypeSchema {
   collectionName: 'detailed_guide_pages';
@@ -795,6 +824,8 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    customCSS: Schema.Attribute.RichText;
+    customJS: Schema.Attribute.RichText;
     headline: Schema.Attribute.RichText;
     html: Schema.Attribute.RichText;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -2100,6 +2131,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::collection.collection': ApiCollectionCollection;
       'api::content-owner.content-owner': ApiContentOwnerContentOwner;
+      'api::custom-asset.custom-asset': ApiCustomAssetCustomAsset;
       'api::detailed-guide-page.detailed-guide-page': ApiDetailedGuidePageDetailedGuidePage;
       'api::detailed-guide.detailed-guide': ApiDetailedGuideDetailedGuide;
       'api::documentation-section.documentation-section': ApiDocumentationSectionDocumentationSection;

@@ -1,0 +1,21 @@
+{
+  "kind": "singleType",
+  "collectionName": "custom_assets",
+  "info": {
+    "singularName": "custom-asset",
+    "pluralName": "custom-assets",
+    "displayName": "Custom Asset"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "css": {
+      "type": "richtext"
+    },
+    "javascript": {
+      "type": "richtext"
+    }
+  }
+}

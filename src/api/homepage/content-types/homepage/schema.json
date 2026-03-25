@@ -19,6 +19,12 @@
     },
     "html": {
       "type": "richtext"
+    },
+    "customJS": {
+      "type": "richtext"
+    },
+    "customCSS": {
+      "type": "richtext"
     }
   }
 }
