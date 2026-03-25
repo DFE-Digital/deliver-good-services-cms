@@ -1214,6 +1214,37 @@ export interface ApiRedirectorRedirector extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiRoadmapRoadmap extends Struct.SingleTypeSchema {
+  collectionName: 'roadmaps';
+  info: {
+    displayName: 'Roadmap';
+    pluralName: 'roadmaps';
+    singularName: 'roadmap';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    body: Schema.Attribute.RichText;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::roadmap.roadmap'
+    > &
+      Schema.Attribute.Private;
+    metaDescription: Schema.Attribute.Text;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updateHistory: Schema.Attribute.RichText;
+  };
+}
+
 export interface ApiRoleRole extends Struct.CollectionTypeSchema {
   collectionName: 'roles';
   info: {
@@ -2054,6 +2085,7 @@ declare module '@strapi/strapi' {
       'api::phase.phase': ApiPhasePhase;
       'api::redirect-301.redirect-301': ApiRedirect301Redirect301;
       'api::redirector.redirector': ApiRedirectorRedirector;
+      'api::roadmap.roadmap': ApiRoadmapRoadmap;
       'api::role.role': ApiRoleRole;
       'api::stage-task-placement.stage-task-placement': ApiStageTaskPlacementStageTaskPlacement;
       'api::standard.standard': ApiStandardStandard;
