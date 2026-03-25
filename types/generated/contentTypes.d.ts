@@ -781,6 +781,36 @@ export interface ApiExternalLinkExternalLink
   };
 }
 
+export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
+  collectionName: 'homepages';
+  info: {
+    displayName: 'Homepage';
+    pluralName: 'homepages';
+    singularName: 'homepage';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    headline: Schema.Attribute.RichText;
+    html: Schema.Attribute.RichText;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::homepage.homepage'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiHtmlPageHtmlPage extends Struct.CollectionTypeSchema {
   collectionName: 'html_pages';
   info: {
@@ -2075,6 +2105,7 @@ declare module '@strapi/strapi' {
       'api::documentation-section.documentation-section': ApiDocumentationSectionDocumentationSection;
       'api::documentation.documentation': ApiDocumentationDocumentation;
       'api::external-link.external-link': ApiExternalLinkExternalLink;
+      'api::homepage.homepage': ApiHomepageHomepage;
       'api::html-page.html-page': ApiHtmlPageHtmlPage;
       'api::job-specification.job-specification': ApiJobSpecificationJobSpecification;
       'api::lifecycle-stage.lifecycle-stage': ApiLifecycleStageLifecycleStage;
