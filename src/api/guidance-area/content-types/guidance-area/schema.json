@@ -1,0 +1,59 @@
+{
+  "kind": "collectionType",
+  "collectionName": "guidance_areas",
+  "info": {
+    "singularName": "guidance-area",
+    "pluralName": "guidance-areas",
+    "displayName": "Guidance area"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "summary": {
+      "type": "text"
+    },
+    "description": {
+      "type": "text"
+    },
+    "colourHex": {
+      "type": "string",
+      "maxLength": 7
+    },
+    "iconKey": {
+      "type": "string"
+    },
+    "order": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "featuredProfessions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tags-profession.tags-profession",
+      "inversedBy": "guidance_areas"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    },
+    "guidance_area_collections": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::guidance-area-collection.guidance-area-collection",
+      "mappedBy": "guidanceArea"
+    }
+  }
+}

@@ -87,6 +87,12 @@
       "allowedTypes": [
         "files"
       ]
+    },
+    "guidance_area_collections": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::guidance-area-collection.guidance-area-collection",
+      "mappedBy": "collection"
     }
   }
 }

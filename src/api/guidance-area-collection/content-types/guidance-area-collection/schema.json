@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "guidance_area_collections",
+  "info": {
+    "singularName": "guidance-area-collection",
+    "pluralName": "guidance-area-collections",
+    "displayName": "Guidance area collection"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "guidanceArea": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::guidance-area.guidance-area",
+      "inversedBy": "guidance_area_collections",
+      "required": true
+    },
+    "collection": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::collection.collection",
+      "inversedBy": "guidance_area_collections",
+      "required": true
+    },
+    "order": {
+      "type": "integer"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "cardDescriptionOverride": {
+      "type": "text"
+    },
+    "hideInArea": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

@@ -54,6 +54,12 @@
       "relation": "manyToMany",
       "target": "api::detailed-guide.detailed-guide",
       "mappedBy": "applicableProfessions"
+    },
+    "guidance_areas": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::guidance-area.guidance-area",
+      "mappedBy": "featuredProfessions"
     }
   }
 }

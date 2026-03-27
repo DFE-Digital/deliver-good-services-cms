@@ -430,6 +430,41 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
+  collectionName: 'articles';
+  info: {
+    displayName: 'Article';
+    pluralName: 'articles';
+    singularName: 'article';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    author: Schema.Attribute.String;
+    body: Schema.Attribute.RichText;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    leadImage: Schema.Attribute.Media<'images'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::article.article'
+    > &
+      Schema.Attribute.Private;
+    metaDescription: Schema.Attribute.Text;
+    publishedAt: Schema.Attribute.DateTime;
+    publishedFrom: Schema.Attribute.DateTime;
+    publishedTo: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'title'>;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCollectionCollection extends Struct.CollectionTypeSchema {
   collectionName: 'collections';
   info: {
@@ -460,6 +495,10 @@ export interface ApiCollectionCollection extends Struct.CollectionTypeSchema {
     detailed_guides: Schema.Attribute.Relation<
       'oneToMany',
       'api::detailed-guide.detailed-guide'
+    >;
+    guidance_area_collections: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::guidance-area-collection.guidance-area-collection'
     >;
     lastReviewedBy: Schema.Attribute.Relation<
       'oneToOne',
@@ -807,6 +846,99 @@ export interface ApiExternalLinkExternalLink
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     url: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface ApiGuidanceAreaCollectionGuidanceAreaCollection
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'guidance_area_collections';
+  info: {
+    displayName: 'Guidance area collection';
+    pluralName: 'guidance-area-collections';
+    singularName: 'guidance-area-collection';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    cardDescriptionOverride: Schema.Attribute.Text;
+    collection: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::collection.collection'
+    > &
+      Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    guidanceArea: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::guidance-area.guidance-area'
+    > &
+      Schema.Attribute.Required;
+    hideInArea: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::guidance-area-collection.guidance-area-collection'
+    > &
+      Schema.Attribute.Private;
+    order: Schema.Attribute.Integer;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiGuidanceAreaGuidanceArea
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'guidance_areas';
+  info: {
+    displayName: 'Guidance area';
+    pluralName: 'guidance-areas';
+    singularName: 'guidance-area';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    colourHex: Schema.Attribute.String &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 7;
+      }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    featuredProfessions: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::tags-profession.tags-profession'
+    >;
+    guidance_area_collections: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::guidance-area-collection.guidance-area-collection'
+    >;
+    iconKey: Schema.Attribute.String;
+    isActive: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::guidance-area.guidance-area'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    order: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<0>;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
+    summary: Schema.Attribute.Text;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -1490,6 +1622,10 @@ export interface ApiTagsProfessionTagsProfession
       'manyToMany',
       'api::detailed-guide.detailed-guide'
     >;
+    guidance_areas: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::guidance-area.guidance-area'
+    >;
     job_specifications: Schema.Attribute.Relation<
       'oneToMany',
       'api::job-specification.job-specification'
@@ -2129,6 +2265,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::article.article': ApiArticleArticle;
       'api::collection.collection': ApiCollectionCollection;
       'api::content-owner.content-owner': ApiContentOwnerContentOwner;
       'api::custom-asset.custom-asset': ApiCustomAssetCustomAsset;
@@ -2137,6 +2274,8 @@ declare module '@strapi/strapi' {
       'api::documentation-section.documentation-section': ApiDocumentationSectionDocumentationSection;
       'api::documentation.documentation': ApiDocumentationDocumentation;
       'api::external-link.external-link': ApiExternalLinkExternalLink;
+      'api::guidance-area-collection.guidance-area-collection': ApiGuidanceAreaCollectionGuidanceAreaCollection;
+      'api::guidance-area.guidance-area': ApiGuidanceAreaGuidanceArea;
       'api::homepage.homepage': ApiHomepageHomepage;
       'api::html-page.html-page': ApiHtmlPageHtmlPage;
       'api::job-specification.job-specification': ApiJobSpecificationJobSpecification;

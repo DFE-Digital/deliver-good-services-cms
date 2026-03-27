@@ -33,6 +33,15 @@
       "type": "boolean",
       "default": true
     },
+    "hasCBPAllowance": {
+      "type": "boolean",
+      "required": false,
+      "default": false
+    },
+    "enableWordDocDownload": {
+      "type": "boolean",
+      "default": true
+    },
     "grade": {
       "type": "enumeration",
       "enum": [
@@ -47,15 +56,6 @@
         "SCS2",
         "SCS3"
       ]
-    },
-    "hasCBPAllowance": {
-      "type": "boolean",
-      "required": false,
-      "default": false
-    },
-    "enableWordDocDownload": {
-      "type": "boolean",
-      "default": true
     },
     "slug": {
       "type": "uid",

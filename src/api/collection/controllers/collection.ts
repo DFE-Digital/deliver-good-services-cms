@@ -7,7 +7,7 @@ import { factories } from '@strapi/strapi';
 const FIELDS_GUIDE = ['title', 'slug', 'metaDescription'] as const;
 const FIELDS_PAGE = ['title', 'slug', 'metaDescription'] as const;
 const FIELDS_EXT = ['title', 'url', 'newTab', 'description'] as const;
-const FIELDS_JOB_SPEC = ['title', 'slug'] as const;
+const FIELDS_JOB_SPEC = ['title', 'slug', 'grade'] as const;
 
 type Section = {
   order?: number;
@@ -181,6 +181,7 @@ export default factories.createCoreController('api::collection.collection', ({ s
                 slug: (doc as Record<string, unknown>).slug,
                 metaDescription: null,
                 url: `/guidance/job-specifications/${(doc as Record<string, unknown>).slug}`,
+                grade: (doc as Record<string, unknown>).grade ?? null,
               });
           } catch {
             /* skip */
