@@ -386,6 +386,21 @@ export interface TaskHowStep extends Struct.ComponentSchema {
   };
 }
 
+export interface ToolTools extends Struct.ComponentSchema {
+  collectionName: 'components_tool_tools';
+  info: {
+    displayName: 'Tools';
+    icon: 'cog';
+  };
+  attributes: {
+    description: Schema.Attribute.Text;
+    internalOnly: Schema.Attribute.Boolean;
+    openInNewTab: Schema.Attribute.Boolean;
+    title: Schema.Attribute.String;
+    url: Schema.Attribute.String;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
@@ -410,6 +425,7 @@ declare module '@strapi/strapi' {
       'shared.link-card': SharedLinkCard;
       'shared.link-item': SharedLinkItem;
       'task.how-step': TaskHowStep;
+      'tool.tools': ToolTools;
     }
   }
 }

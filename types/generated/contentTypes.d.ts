@@ -974,6 +974,39 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiHowManyPeopleHowManyPeople extends Struct.SingleTypeSchema {
+  collectionName: 'how_many_peoples';
+  info: {
+    displayName: 'How many people';
+    pluralName: 'how-many-peoples';
+    singularName: 'how-many-people';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    data: Schema.Attribute.JSON;
+    dataDisclaimer: Schema.Attribute.RichText;
+    description: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::how-many-people.how-many-people'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    quickPickNumbers: Schema.Attribute.String;
+    slug: Schema.Attribute.UID<'title'>;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiHtmlPageHtmlPage extends Struct.CollectionTypeSchema {
   collectionName: 'html_pages';
   info: {
@@ -1721,6 +1754,35 @@ export interface ApiTaskTask extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiToolTool extends Struct.SingleTypeSchema {
+  collectionName: 'tools';
+  info: {
+    displayName: 'Tools';
+    pluralName: 'tools';
+    singularName: 'tool';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    body: Schema.Attribute.RichText;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::tool.tool'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID;
+    title: Schema.Attribute.String;
+    Tool: Schema.Attribute.Component<'tool.tools', true>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiTrackTrack extends Struct.CollectionTypeSchema {
   collectionName: 'tracks';
   info: {
@@ -2277,6 +2339,7 @@ declare module '@strapi/strapi' {
       'api::guidance-area-collection.guidance-area-collection': ApiGuidanceAreaCollectionGuidanceAreaCollection;
       'api::guidance-area.guidance-area': ApiGuidanceAreaGuidanceArea;
       'api::homepage.homepage': ApiHomepageHomepage;
+      'api::how-many-people.how-many-people': ApiHowManyPeopleHowManyPeople;
       'api::html-page.html-page': ApiHtmlPageHtmlPage;
       'api::job-specification.job-specification': ApiJobSpecificationJobSpecification;
       'api::lifecycle-stage.lifecycle-stage': ApiLifecycleStageLifecycleStage;
@@ -2295,6 +2358,7 @@ declare module '@strapi/strapi' {
       'api::tags-profession.tags-profession': ApiTagsProfessionTagsProfession;
       'api::tags-track.tags-track': ApiTagsTrackTagsTrack;
       'api::task.task': ApiTaskTask;
+      'api::tool.tool': ApiToolTool;
       'api::track.track': ApiTrackTrack;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

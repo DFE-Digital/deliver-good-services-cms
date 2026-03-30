@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_tool_tools",
+  "info": {
+    "displayName": "Tools",
+    "icon": "cog"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "internalOnly": {
+      "type": "boolean"
+    },
+    "description": {
+      "type": "text"
+    },
+    "openInNewTab": {
+      "type": "boolean"
+    }
+  },
+  "config": {}
+}
