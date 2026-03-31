@@ -877,7 +877,7 @@ export interface ApiExternalLinkExternalLink
   extends Struct.CollectionTypeSchema {
   collectionName: 'external_links';
   info: {
-    displayName: 'External link';
+    displayName: 'Link';
     pluralName: 'external-links';
     singularName: 'external-link';
   };
@@ -889,6 +889,7 @@ export interface ApiExternalLinkExternalLink
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
+    externalLink: Schema.Attribute.Boolean;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -896,8 +897,13 @@ export interface ApiExternalLinkExternalLink
     > &
       Schema.Attribute.Private;
     newTab: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    priorityInGroup: Schema.Attribute.Boolean;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String & Schema.Attribute.Required;
+    type: Schema.Attribute.Enumeration<
+      ['Service', 'Guidance', 'Standard', 'Policy', 'Process']
+    > &
+      Schema.Attribute.DefaultTo<'Guidance'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

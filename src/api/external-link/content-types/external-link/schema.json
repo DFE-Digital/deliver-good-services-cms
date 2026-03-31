@@ -4,7 +4,7 @@
   "info": {
     "singularName": "external-link",
     "pluralName": "external-links",
-    "displayName": "External link"
+    "displayName": "Link"
   },
   "options": {
     "draftAndPublish": true
@@ -23,8 +23,25 @@
       "type": "boolean",
       "default": false
     },
+    "externalLink": {
+      "type": "boolean"
+    },
     "description": {
       "type": "text"
+    },
+    "type": {
+      "type": "enumeration",
+      "default": "Guidance",
+      "enum": [
+        "Service",
+        "Guidance",
+        "Standard",
+        "Policy",
+        "Process"
+      ]
+    },
+    "priorityInGroup": {
+      "type": "boolean"
     }
   }
 }

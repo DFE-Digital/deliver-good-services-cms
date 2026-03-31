@@ -6,7 +6,7 @@ import { factories } from '@strapi/strapi';
 
 const FIELDS_GUIDE = ['title', 'slug', 'metaDescription'] as const;
 const FIELDS_PAGE = ['title', 'slug', 'metaDescription'] as const;
-const FIELDS_EXT = ['title', 'url', 'newTab', 'description'] as const;
+const FIELDS_EXT = ['title', 'url', 'newTab', 'description', 'externalLink', 'type', 'priorityInGroup'] as const;
 const FIELDS_JOB_SPEC = ['title', 'slug', 'grade'] as const;
 
 type Section = {
@@ -157,6 +157,9 @@ export default factories.createCoreController('api::collection.collection', ({ s
               metaDescription: (doc as Record<string, unknown>).description,
               url: (doc as Record<string, unknown>).url,
               newTab: (doc as Record<string, unknown>).newTab,
+              externalLink: (doc as Record<string, unknown>).externalLink,
+              linkType: (doc as Record<string, unknown>).type,
+              priorityInGroup: Boolean((doc as Record<string, unknown>).priorityInGroup),
             });
         } catch {
           /* skip */
@@ -189,11 +192,21 @@ export default factories.createCoreController('api::collection.collection', ({ s
         }
       }
 
+      const prioritizedItems = items
+        .map((item, index) => ({ item, index }))
+        .sort((a, b) => {
+          const aPriority = Boolean((a.item as Record<string, unknown>).priorityInGroup);
+          const bPriority = Boolean((b.item as Record<string, unknown>).priorityInGroup);
+          if (aPriority === bPriority) return a.index - b.index;
+          return bPriority ? 1 : -1;
+        })
+        .map(({ item }) => item);
+
       sections.push({
         title: section.title ?? '',
         summary: section.description ?? undefined,
         order: section.order ?? 0,
-        items,
+        items: prioritizedItems,
       });
     }
 
