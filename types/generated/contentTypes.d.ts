@@ -901,7 +901,7 @@ export interface ApiExternalLinkExternalLink
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     type: Schema.Attribute.Enumeration<
-      ['Service', 'Guidance', 'Standard', 'Policy', 'Process']
+      ['Service', 'Guidance', 'Standards', 'Policy', 'Process']
     > &
       Schema.Attribute.DefaultTo<'Guidance'>;
     updatedAt: Schema.Attribute.DateTime;
