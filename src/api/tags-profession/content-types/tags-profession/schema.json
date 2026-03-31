@@ -60,6 +60,12 @@
       "relation": "manyToMany",
       "target": "api::guidance-area.guidance-area",
       "mappedBy": "featuredProfessions"
+    },
+    "content_entries": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::content-entry.content-entry",
+      "mappedBy": "roles"
     }
   }
 }

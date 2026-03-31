@@ -42,11 +42,6 @@
       "relation": "oneToOne",
       "target": "api::detailed-guide.detailed-guide"
     },
-    "html_page": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::html-page.html-page"
-    },
     "externalUrl": {
       "type": "string"
     }

@@ -16,12 +16,6 @@
     },
     "evidence_examples": {
       "type": "richtext"
-    },
-    "related_standard": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::standard.standard",
-      "description": "Linked standard"
     }
   }
 }

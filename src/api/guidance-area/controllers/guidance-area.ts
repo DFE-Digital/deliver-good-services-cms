@@ -26,6 +26,14 @@ type RawCollection = {
 	sections?: RawSection[];
 };
 
+type RawDetailedGuide = {
+	title?: string;
+	slug?: string;
+	metaDescription?: string;
+	applicableProfessions?: RawTag[];
+	detailed_guide_pages?: unknown[];
+};
+
 type RawCollectionProfessionRef = {
 	slug?: string;
 	applicableProfessions?: RawTag[];
@@ -36,6 +44,7 @@ type RawPlacement = {
 	featured?: boolean;
 	cardDescriptionOverride?: string;
 	collection?: RawCollection;
+	detailedGuide?: RawDetailedGuide;
 };
 
 type RawArea = {
@@ -91,6 +100,10 @@ function deriveCollectionTags(sections: RawSection[] | undefined): string[] {
 	return [...tags];
 }
 
+function contentKey(contentType: string, slug: string): string {
+	return `${contentType}:${slug}`.toLowerCase();
+}
+
 export default factories.createCoreController('api::guidance-area.guidance-area', ({ strapi }) => ({
 	async findIndex(ctx) {
 		const areas = (await strapi.documents('api::guidance-area.guidance-area').findMany({
@@ -116,6 +129,17 @@ export default factories.createCoreController('api::guidance-area.guidance-area'
 										'job_descriptions',
 										'job_descriptions.job_specifications',
 									] as const,
+								},
+							},
+						},
+						detailedGuide: {
+							fields: ['title', 'slug', 'metaDescription'],
+							populate: {
+								applicableProfessions: {
+									fields: ['title', 'slug', 'plural'],
+								},
+								detailed_guide_pages: {
+									fields: ['slug'],
 								},
 							},
 						},
@@ -147,25 +171,92 @@ export default factories.createCoreController('api::guidance-area.guidance-area'
 			(left, right) => (left.order ?? 0) - (right.order ?? 0) || (left.name ?? '').localeCompare(right.name ?? '')
 		);
 
-		const collectionAreas = new Map<string, Array<{ title: string; slug: string }>>();
+		const contentAreas = new Map<string, Array<{ title: string; slug: string }>>();
 		for (const area of sortedAreas) {
 			for (const placement of area.guidance_area_collections ?? []) {
-				const collection = placement.collection;
-				const slug = collection?.slug?.trim();
 				const title = area.name?.trim();
 				const areaSlug = area.slug?.trim();
-				if (!slug || !title || !areaSlug) continue;
+				if (!title || !areaSlug) continue;
 
-				const existing = collectionAreas.get(slug) ?? [];
-				existing.push({ title, slug: areaSlug });
-				collectionAreas.set(slug, existing);
+				const collectionSlug = placement.collection?.slug?.trim();
+				if (collectionSlug) {
+					const key = contentKey('collection', collectionSlug);
+					const existing = contentAreas.get(key) ?? [];
+					existing.push({ title, slug: areaSlug });
+					contentAreas.set(key, existing);
+				}
+
+				const guideSlug = placement.detailedGuide?.slug?.trim();
+				if (guideSlug) {
+					const key = contentKey('detailed_guide', guideSlug);
+					const existing = contentAreas.get(key) ?? [];
+					existing.push({ title, slug: areaSlug });
+					contentAreas.set(key, existing);
+				}
 			}
 		}
 
 		const data = sortedAreas.map((area) => {
 			const placements = [...(area.guidance_area_collections ?? [])]
-				.filter((placement) => placement.collection?.slug && placement.collection?.title)
 				.sort((left, right) => (left.order ?? 0) - (right.order ?? 0));
+
+			const cards = placements.flatMap((placement) => {
+				const items: Array<Record<string, unknown>> = [];
+
+				const collection = placement.collection as RawCollection | undefined;
+				if (collection?.slug && collection.title) {
+					const slug = collection.slug;
+					const key = contentKey('collection', slug);
+					const alsoInAreas = (contentAreas.get(key) ?? []).filter((otherArea) => otherArea.slug !== area.slug);
+					const applicableProfessions =
+						(collection.applicableProfessions ?? []).length > 0
+							? (collection.applicableProfessions ?? [])
+							: (collectionProfessionLookup.get(slug) ?? []);
+
+					items.push({
+						title: collection.title ?? '',
+						slug,
+						url: `/guidance/collections/${slug}`,
+						contentType: 'Collection',
+						description: placement.cardDescriptionOverride?.trim() || (collection.metaDescription ?? ''),
+						itemCount: countCollectionItems(collection.sections),
+						featured: placement.featured ?? false,
+						tags: deriveCollectionTags(collection.sections),
+						applicableProfessions: applicableProfessions.map((profession) => ({
+							title: profession.title ?? '',
+							slug: profession.slug ?? '',
+							plural: profession.plural ?? null,
+						})),
+						alsoInAreas,
+					});
+				}
+
+				const detailedGuide = placement.detailedGuide as RawDetailedGuide | undefined;
+				if (detailedGuide?.slug && detailedGuide.title) {
+					const slug = detailedGuide.slug;
+					const key = contentKey('detailed_guide', slug);
+					const alsoInAreas = (contentAreas.get(key) ?? []).filter((otherArea) => otherArea.slug !== area.slug);
+
+					items.push({
+						title: detailedGuide.title ?? '',
+						slug,
+						url: `/guidance/guides/${slug}`,
+						contentType: 'Detailed guide',
+						description: placement.cardDescriptionOverride?.trim() || (detailedGuide.metaDescription ?? ''),
+						itemCount: Math.max(1, (detailedGuide.detailed_guide_pages?.length ?? 0) + 1),
+						featured: placement.featured ?? false,
+						tags: ['Guidance'],
+						applicableProfessions: (detailedGuide.applicableProfessions ?? []).map((profession) => ({
+							title: profession.title ?? '',
+							slug: profession.slug ?? '',
+							plural: profession.plural ?? null,
+						})),
+						alsoInAreas,
+					});
+				}
+
+				return items;
+			});
 
 			return {
 				name: area.name ?? '',
@@ -178,30 +269,7 @@ export default factories.createCoreController('api::guidance-area.guidance-area'
 					slug: profession.slug ?? '',
 					plural: profession.plural ?? null,
 				})),
-				collections: placements.map((placement) => {
-					const collection = placement.collection as RawCollection;
-					const slug = collection.slug ?? '';
-					const alsoInAreas = (collectionAreas.get(slug) ?? []).filter((otherArea) => otherArea.slug !== area.slug);
-					const applicableProfessions =
-						(collection.applicableProfessions ?? []).length > 0
-							? (collection.applicableProfessions ?? [])
-							: (collectionProfessionLookup.get(slug) ?? []);
-
-					return {
-						title: collection.title ?? '',
-						slug,
-						description: placement.cardDescriptionOverride?.trim() || (collection.metaDescription ?? ''),
-						itemCount: countCollectionItems(collection.sections),
-						featured: placement.featured ?? false,
-						tags: deriveCollectionTags(collection.sections),
-						applicableProfessions: applicableProfessions.map((profession) => ({
-							title: profession.title ?? '',
-							slug: profession.slug ?? '',
-							plural: profession.plural ?? null,
-						})),
-						alsoInAreas,
-					};
-				}),
+				collections: cards,
 			};
 		});
 

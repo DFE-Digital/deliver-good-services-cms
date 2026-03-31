@@ -160,37 +160,6 @@ export interface LifecycleRelatedGuidanceLink extends Struct.ComponentSchema {
   };
 }
 
-export interface PhasePhaseActivity extends Struct.ComponentSchema {
-  collectionName: 'components_phase_phase_activities';
-  info: {
-    description: 'Task/activity in a phase with profession tags, track, guidance and resources';
-    displayName: 'Phase activity';
-  };
-  attributes: {
-    description: Schema.Attribute.RichText;
-    guidanceContent: Schema.Attribute.RichText;
-    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
-    professionTags: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::tags-profession.tags-profession'
-    >;
-    related_content: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::detailed-guide.detailed-guide'
-    >;
-    resources: Schema.Attribute.Component<
-      'phase.phase-activity-resource',
-      true
-    >;
-    shortDescription: Schema.Attribute.Text;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-    trackTag: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::tags-track.tags-track'
-    >;
-  };
-}
-
 export interface PhasePhaseActivityResource extends Struct.ComponentSchema {
   collectionName: 'components_phase_phase_activity_resources';
   info: {
@@ -258,10 +227,6 @@ export interface PhasePhaseRequirement extends Struct.ComponentSchema {
   attributes: {
     description: Schema.Attribute.RichText & Schema.Attribute.Required;
     evidence_examples: Schema.Attribute.RichText;
-    related_standard: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::standard.standard'
-    >;
     requirement_title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
@@ -375,6 +340,21 @@ export interface SharedLinkItem extends Struct.ComponentSchema {
   };
 }
 
+export interface StandardSectionSection extends Struct.ComponentSchema {
+  collectionName: 'components_standard_section_sections';
+  info: {
+    displayName: 'Section';
+  };
+  attributes: {
+    content_entries: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::content-entry.content-entry'
+    >;
+    description: Schema.Attribute.Text;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface TaskHowStep extends Struct.ComponentSchema {
   collectionName: 'components_task_how_steps';
   info: {
@@ -415,7 +395,6 @@ declare module '@strapi/strapi' {
       'lifecycle.hub-section': LifecycleHubSection;
       'lifecycle.profession-sidebar-link': LifecycleProfessionSidebarLink;
       'lifecycle.related-guidance-link': LifecycleRelatedGuidanceLink;
-      'phase.phase-activity': PhasePhaseActivity;
       'phase.phase-activity-resource': PhasePhaseActivityResource;
       'phase.phase-assurance': PhasePhaseAssurance;
       'phase.phase-output': PhasePhaseOutput;
@@ -424,6 +403,7 @@ declare module '@strapi/strapi' {
       'profession.group': ProfessionGroup;
       'shared.link-card': SharedLinkCard;
       'shared.link-item': SharedLinkItem;
+      'standard-section.section': StandardSectionSection;
       'task.how-step': TaskHowStep;
       'tool.tools': ToolTools;
     }

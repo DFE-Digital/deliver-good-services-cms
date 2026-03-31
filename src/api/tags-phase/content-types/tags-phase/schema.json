@@ -38,6 +38,18 @@
       "relation": "manyToMany",
       "target": "api::detailed-guide-page.detailed-guide-page",
       "inversedBy": "applicablePhases"
+    },
+    "content_entries": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::content-entry.content-entry",
+      "mappedBy": "phases"
+    },
+    "detailed_guides": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::detailed-guide.detailed-guide",
+      "mappedBy": "applicablePhases"
     }
   }
 }

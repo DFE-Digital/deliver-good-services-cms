@@ -536,6 +536,62 @@ export interface ApiCollectionCollection extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiContentEntryContentEntry
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'content_entries';
+  info: {
+    displayName: 'Content entry';
+    pluralName: 'content-entries';
+    singularName: 'content-entry';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    body: Schema.Attribute.RichText;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    entryType: Schema.Attribute.Enumeration<
+      [
+        'Requirement',
+        'Guidance',
+        'Principle',
+        'Consideration',
+        'Standard point',
+        'Assessment point',
+      ]
+    >;
+    legalRequirement: Schema.Attribute.Boolean;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::content-entry.content-entry'
+    > &
+      Schema.Attribute.Private;
+    notes: Schema.Attribute.RichText;
+    phases: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::tags-phase.tags-phase'
+    >;
+    priority: Schema.Attribute.Enumeration<
+      ['Critical', 'High', 'Medium', 'Low']
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    roles: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::tags-profession.tags-profession'
+    >;
+    slug: Schema.Attribute.UID<'title'>;
+    strength: Schema.Attribute.Enumeration<['Must', 'Should', 'Could']>;
+    summary: Schema.Attribute.RichText;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiContentOwnerContentOwner
   extends Struct.CollectionTypeSchema {
   collectionName: 'content_owners';
@@ -682,7 +738,7 @@ export interface ApiDetailedGuideDetailedGuide
   attributes: {
     applicablePhases: Schema.Attribute.Relation<
       'manyToMany',
-      'api::phase.phase'
+      'api::tags-phase.tags-phase'
     >;
     applicableProfessions: Schema.Attribute.Relation<
       'manyToMany',
@@ -865,17 +921,19 @@ export interface ApiGuidanceAreaCollectionGuidanceAreaCollection
     collection: Schema.Attribute.Relation<
       'manyToOne',
       'api::collection.collection'
-    > &
-      Schema.Attribute.Required;
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    detailedGuide: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::detailed-guide.detailed-guide'
+    >;
     featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     guidanceArea: Schema.Attribute.Relation<
       'manyToOne',
       'api::guidance-area.guidance-area'
-    > &
-      Schema.Attribute.Required;
+    >;
     hideInArea: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -885,6 +943,7 @@ export interface ApiGuidanceAreaCollectionGuidanceAreaCollection
       Schema.Attribute.Private;
     order: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1007,45 +1066,6 @@ export interface ApiHowManyPeopleHowManyPeople extends Struct.SingleTypeSchema {
   };
 }
 
-export interface ApiHtmlPageHtmlPage extends Struct.CollectionTypeSchema {
-  collectionName: 'html_pages';
-  info: {
-    displayName: 'HTML page';
-    pluralName: 'html-pages';
-    singularName: 'html-page';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    css: Schema.Attribute.Text;
-    html: Schema.Attribute.RichText & Schema.Attribute.Required;
-    js: Schema.Attribute.Text;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::html-page.html-page'
-    > &
-      Schema.Attribute.Private;
-    metaDescription: Schema.Attribute.Text &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 240;
-      }>;
-    publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    title: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiJobSpecificationJobSpecification
   extends Struct.CollectionTypeSchema {
   collectionName: 'job_specifications';
@@ -1092,96 +1112,6 @@ export interface ApiJobSpecificationJobSpecification
   };
 }
 
-export interface ApiLifecycleStageLifecycleStage
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'lifecycle_stages';
-  info: {
-    description: 'Stage within a lifecycle (e.g. Explore, Discovery, Alpha)';
-    displayName: 'Lifecycle Stage';
-    pluralName: 'lifecycle-stages';
-    singularName: 'lifecycle-stage';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    activeTracks: Schema.Attribute.Relation<'manyToMany', 'api::track.track'>;
-    colourHex: Schema.Attribute.String;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    durationLabel: Schema.Attribute.String;
-    isCollapsedByDefault: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<false>;
-    lifecycle: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::lifecycle.lifecycle'
-    >;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::lifecycle-stage.lifecycle-stage'
-    > &
-      Schema.Attribute.Private;
-    order: Schema.Attribute.Integer &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<0>;
-    placements: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::stage-task-placement.stage-task-placement'
-    >;
-    publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    summary: Schema.Attribute.RichText;
-    tagLabel: Schema.Attribute.String;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiLifecycleLifecycle extends Struct.CollectionTypeSchema {
-  collectionName: 'lifecycles';
-  info: {
-    description: 'Top-level lifecycle (e.g. What to do when). Has many stages.';
-    displayName: 'Lifecycle';
-    pluralName: 'lifecycles';
-    singularName: 'lifecycle';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    audienceLabel: Schema.Attribute.String;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    defaultView: Schema.Attribute.Enumeration<['card', 'list']> &
-      Schema.Attribute.DefaultTo<'card'>;
-    lastUpdatedLabel: Schema.Attribute.String;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::lifecycle.lifecycle'
-    > &
-      Schema.Attribute.Private;
-    lucidResources: Schema.Attribute.Component<'shared.link-card', true>;
-    ownerLabel: Schema.Attribute.String;
-    publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    stages: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::lifecycle-stage.lifecycle-stage'
-    >;
-    summary: Schema.Attribute.RichText;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiNavigationItemNavigationItem
   extends Struct.CollectionTypeSchema {
   collectionName: 'navigation_items';
@@ -1210,10 +1140,6 @@ export interface ApiNavigationItemNavigationItem
       'api::detailed-guide.detailed-guide'
     >;
     externalUrl: Schema.Attribute.String;
-    html_page: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::html-page.html-page'
-    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1228,39 +1154,6 @@ export interface ApiNavigationItemNavigationItem
       'api::navigation-item.navigation-item'
     >;
     publishedAt: Schema.Attribute.DateTime;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiOutputOutput extends Struct.CollectionTypeSchema {
-  collectionName: 'outputs';
-  info: {
-    description: 'Artefact or output produced by a task';
-    displayName: 'Output';
-    pluralName: 'outputs';
-    singularName: 'output';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    description: Schema.Attribute.Text;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::output.output'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    tasks: Schema.Attribute.Relation<'manyToMany', 'api::task.task'>;
-    templateLink: Schema.Attribute.String;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1313,68 +1206,6 @@ export interface ApiPageNotificationPageNotification
   };
 }
 
-export interface ApiPhasePhase extends Struct.CollectionTypeSchema {
-  collectionName: 'phases';
-  info: {
-    description: 'Lifecycle phase (e.g. Discovery, Alpha). Powers phase landing pages.';
-    displayName: 'Phase';
-    pluralName: 'phases';
-    singularName: 'phase';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    activities: Schema.Attribute.Component<'phase.phase-activity', true>;
-    assurance: Schema.Attribute.Component<'phase.phase-assurance', false>;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    detailed_guides: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::detailed-guide.detailed-guide'
-    >;
-    duration: Schema.Attribute.String;
-    hint: Schema.Attribute.Text;
-    intent: Schema.Attribute.RichText;
-    is_active: Schema.Attribute.Boolean &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<true>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::phase.phase'> &
-      Schema.Attribute.Private;
-    mandatory_requirements: Schema.Attribute.Component<
-      'phase.phase-requirement',
-      true
-    >;
-    outputs: Schema.Attribute.Component<'phase.phase-output', true>;
-    publishedAt: Schema.Attribute.DateTime;
-    purpose: Schema.Attribute.RichText;
-    relatedGuidance: Schema.Attribute.Component<'phase.related-link', true>;
-    relatedStandards: Schema.Attribute.Component<'phase.related-link', true>;
-    relatedTools: Schema.Attribute.Component<'phase.related-link', true>;
-    relatedTraining: Schema.Attribute.Component<'phase.related-link', true>;
-    sequence: Schema.Attribute.Integer &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<0>;
-    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    summary: Schema.Attribute.RichText & Schema.Attribute.Required;
-    teamSize: Schema.Attribute.String;
-    title: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 255;
-      }>;
-    trackTags: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::tags-track.tags-track'
-    >;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiRedirect301Redirect301 extends Struct.CollectionTypeSchema {
   collectionName: 'redirect_301s';
   info: {
@@ -1395,16 +1226,11 @@ export interface ApiRedirect301Redirect301 extends Struct.CollectionTypeSchema {
       'api::redirect-301.redirect-301'
     > &
       Schema.Attribute.Private;
-    newPath: Schema.Attribute.String & Schema.Attribute.Required;
-    oldPath: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
+    mapping: Schema.Attribute.JSON;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    useInterimPage: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<false>;
   };
 }
 
@@ -1471,113 +1297,34 @@ export interface ApiRoadmapRoadmap extends Struct.SingleTypeSchema {
   };
 }
 
-export interface ApiRoleRole extends Struct.CollectionTypeSchema {
-  collectionName: 'roles';
-  info: {
-    description: 'DDaT profession role for filtering and displaying task ownership';
-    displayName: 'Role';
-    pluralName: 'roles';
-    singularName: 'role';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    colourHex: Schema.Attribute.String;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::role.role'> &
-      Schema.Attribute.Private;
-    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
-    publishedAt: Schema.Attribute.DateTime;
-    shortCode: Schema.Attribute.String;
-    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    tasks: Schema.Attribute.Relation<'manyToMany', 'api::task.task'>;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiStageTaskPlacementStageTaskPlacement
+export interface ApiServiceStandardServiceStandard
   extends Struct.CollectionTypeSchema {
-  collectionName: 'stage_task_placements';
+  collectionName: 'service_standards';
   info: {
-    description: 'Places a task within a lifecycle stage with order and optional overrides';
-    displayName: 'Stage Task Placement';
-    pluralName: 'stage-task-placements';
-    singularName: 'stage-task-placement';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::stage-task-placement.stage-task-placement'
-    > &
-      Schema.Attribute.Private;
-    order: Schema.Attribute.Integer &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<0>;
-    overrideGuidanceLinks: Schema.Attribute.Component<'shared.link-item', true>;
-    overrideOutputs: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::output.output'
-    >;
-    publishedAt: Schema.Attribute.DateTime;
-    stage: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::lifecycle-stage.lifecycle-stage'
-    >;
-    stageNotes: Schema.Attribute.RichText;
-    task: Schema.Attribute.Relation<'manyToOne', 'api::task.task'>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    visibility: Schema.Attribute.Enumeration<
-      ['published', 'draft', 'archived']
-    > &
-      Schema.Attribute.DefaultTo<'published'>;
-    whenLabel: Schema.Attribute.String;
-  };
-}
-
-export interface ApiStandardStandard extends Struct.CollectionTypeSchema {
-  collectionName: 'standards';
-  info: {
-    description: 'Standard that can be linked from phase requirements and tagged with applicable_phases';
-    displayName: 'Standard';
-    pluralName: 'standards';
-    singularName: 'standard';
+    displayName: 'Service standard';
+    pluralName: 'service-standards';
+    singularName: 'service-standard';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    applicable_phases: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::phase.phase'
-    >;
+    body: Schema.Attribute.RichText;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::standard.standard'
+      'api::service-standard.service-standard'
     > &
       Schema.Attribute.Private;
+    point: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
+    Section: Schema.Attribute.Component<'standard-section.section', true>;
+    slug: Schema.Attribute.UID<'title'>;
+    title: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1600,12 +1347,20 @@ export interface ApiTagsPhaseTagsPhase extends Struct.CollectionTypeSchema {
       'manyToMany',
       'api::collection.collection'
     >;
+    content_entries: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::content-entry.content-entry'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     detailed_guide_pages: Schema.Attribute.Relation<
       'manyToMany',
       'api::detailed-guide-page.detailed-guide-page'
+    >;
+    detailed_guides: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::detailed-guide.detailed-guide'
     >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -1644,6 +1399,10 @@ export interface ApiTagsProfessionTagsProfession
       'manyToMany',
       'api::collection.collection'
     >;
+    content_entries: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::content-entry.content-entry'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1680,80 +1439,6 @@ export interface ApiTagsProfessionTagsProfession
   };
 }
 
-export interface ApiTagsTrackTagsTrack extends Struct.CollectionTypeSchema {
-  collectionName: 'tags_tracks';
-  info: {
-    description: 'Track tag for lifecycle (Design, Build, Run)';
-    displayName: 'Tags - Track';
-    pluralName: 'tags-tracks';
-    singularName: 'tags-track';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::tags-track.tags-track'
-    > &
-      Schema.Attribute.Private;
-    phases: Schema.Attribute.Relation<'manyToMany', 'api::phase.phase'>;
-    publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    title: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiTaskTask extends Struct.CollectionTypeSchema {
-  collectionName: 'tasks';
-  info: {
-    description: 'Reusable canonical task content; placed in stages via Stage Task Placement';
-    displayName: 'Task';
-    pluralName: 'tasks';
-    singularName: 'task';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    guidanceLinks: Schema.Attribute.Component<'shared.link-item', true>;
-    howSteps: Schema.Attribute.Component<'task.how-step', true>;
-    leadRole: Schema.Attribute.Relation<'manyToOne', 'api::role.role'>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::task.task'> &
-      Schema.Attribute.Private;
-    notes: Schema.Attribute.RichText;
-    outputs: Schema.Attribute.Relation<'manyToMany', 'api::output.output'>;
-    placements: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::stage-task-placement.stage-task-placement'
-    >;
-    publishedAt: Schema.Attribute.DateTime;
-    roles: Schema.Attribute.Relation<'manyToMany', 'api::role.role'>;
-    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
-    track: Schema.Attribute.Relation<'manyToOne', 'api::track.track'>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    what: Schema.Attribute.RichText;
-    whyItMatters: Schema.Attribute.RichText;
-  };
-}
-
 export interface ApiToolTool extends Struct.SingleTypeSchema {
   collectionName: 'tools';
   info: {
@@ -1777,36 +1462,6 @@ export interface ApiToolTool extends Struct.SingleTypeSchema {
     slug: Schema.Attribute.UID;
     title: Schema.Attribute.String;
     Tool: Schema.Attribute.Component<'tool.tools', true>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiTrackTrack extends Struct.CollectionTypeSchema {
-  collectionName: 'tracks';
-  info: {
-    description: 'Practice track (Design, Build, Run) for filtering lifecycle tasks';
-    displayName: 'Track';
-    pluralName: 'tracks';
-    singularName: 'track';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    colourHex: Schema.Attribute.String;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    description: Schema.Attribute.Text;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'api::track.track'> &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
-    tasks: Schema.Attribute.Relation<'oneToMany', 'api::task.task'>;
-    title: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -2329,6 +1984,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::article.article': ApiArticleArticle;
       'api::collection.collection': ApiCollectionCollection;
+      'api::content-entry.content-entry': ApiContentEntryContentEntry;
       'api::content-owner.content-owner': ApiContentOwnerContentOwner;
       'api::custom-asset.custom-asset': ApiCustomAssetCustomAsset;
       'api::detailed-guide-page.detailed-guide-page': ApiDetailedGuidePageDetailedGuidePage;
@@ -2340,26 +1996,16 @@ declare module '@strapi/strapi' {
       'api::guidance-area.guidance-area': ApiGuidanceAreaGuidanceArea;
       'api::homepage.homepage': ApiHomepageHomepage;
       'api::how-many-people.how-many-people': ApiHowManyPeopleHowManyPeople;
-      'api::html-page.html-page': ApiHtmlPageHtmlPage;
       'api::job-specification.job-specification': ApiJobSpecificationJobSpecification;
-      'api::lifecycle-stage.lifecycle-stage': ApiLifecycleStageLifecycleStage;
-      'api::lifecycle.lifecycle': ApiLifecycleLifecycle;
       'api::navigation-item.navigation-item': ApiNavigationItemNavigationItem;
-      'api::output.output': ApiOutputOutput;
       'api::page-notification.page-notification': ApiPageNotificationPageNotification;
-      'api::phase.phase': ApiPhasePhase;
       'api::redirect-301.redirect-301': ApiRedirect301Redirect301;
       'api::redirector.redirector': ApiRedirectorRedirector;
       'api::roadmap.roadmap': ApiRoadmapRoadmap;
-      'api::role.role': ApiRoleRole;
-      'api::stage-task-placement.stage-task-placement': ApiStageTaskPlacementStageTaskPlacement;
-      'api::standard.standard': ApiStandardStandard;
+      'api::service-standard.service-standard': ApiServiceStandardServiceStandard;
       'api::tags-phase.tags-phase': ApiTagsPhaseTagsPhase;
       'api::tags-profession.tags-profession': ApiTagsProfessionTagsProfession;
-      'api::tags-track.tags-track': ApiTagsTrackTagsTrack;
-      'api::task.task': ApiTaskTask;
       'api::tool.tool': ApiToolTool;
-      'api::track.track': ApiTrackTrack;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

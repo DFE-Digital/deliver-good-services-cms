@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_standard_section_sections",
+  "info": {
+    "displayName": "Section"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "content_entries": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::content-entry.content-entry"
+    }
+  },
+  "config": {}
+}

@@ -11,18 +11,8 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "oldPath": {
-      "type": "string",
-      "required": true,
-      "unique": true
-    },
-    "newPath": {
-      "type": "string",
-      "required": true
-    },
-    "useInterimPage": {
-      "type": "boolean",
-      "default": false
+    "mapping": {
+      "type": "json"
     }
   }
 }

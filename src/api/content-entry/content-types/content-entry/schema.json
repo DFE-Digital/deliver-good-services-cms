@@ -1,0 +1,74 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_entries",
+  "info": {
+    "singularName": "content-entry",
+    "pluralName": "content-entries",
+    "displayName": "Content entry"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "summary": {
+      "type": "richtext"
+    },
+    "body": {
+      "type": "richtext"
+    },
+    "entryType": {
+      "type": "enumeration",
+      "enum": [
+        "Requirement",
+        "Guidance",
+        "Principle",
+        "Consideration",
+        "Standard point",
+        "Assessment point"
+      ]
+    },
+    "strength": {
+      "type": "enumeration",
+      "enum": [
+        "Must",
+        "Should",
+        "Could"
+      ]
+    },
+    "priority": {
+      "type": "enumeration",
+      "enum": [
+        "Critical",
+        "High",
+        "Medium",
+        "Low"
+      ]
+    },
+    "legalRequirement": {
+      "type": "boolean"
+    },
+    "notes": {
+      "type": "richtext"
+    },
+    "phases": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tags-phase.tags-phase",
+      "inversedBy": "content_entries"
+    },
+    "roles": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tags-profession.tags-profession",
+      "inversedBy": "content_entries"
+    }
+  }
+}

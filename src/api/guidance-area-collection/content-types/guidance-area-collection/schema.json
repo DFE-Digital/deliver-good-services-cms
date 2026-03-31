@@ -11,19 +11,25 @@
   },
   "pluginOptions": {},
   "attributes": {
+    "title": {
+      "type": "string"
+    },
     "guidanceArea": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::guidance-area.guidance-area",
-      "inversedBy": "guidance_area_collections",
-      "required": true
+      "inversedBy": "guidance_area_collections"
     },
     "collection": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::collection.collection",
-      "inversedBy": "guidance_area_collections",
-      "required": true
+      "inversedBy": "guidance_area_collections"
+    },
+    "detailedGuide": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::detailed-guide.detailed-guide"
     },
     "order": {
       "type": "integer"

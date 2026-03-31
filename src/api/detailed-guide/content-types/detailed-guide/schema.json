@@ -46,12 +46,6 @@
       "target": "api::collection.collection",
       "inversedBy": "detailed_guides"
     },
-    "applicablePhases": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::phase.phase",
-      "mappedBy": "detailed_guides"
-    },
     "applicableProfessions": {
       "type": "relation",
       "relation": "manyToMany",
@@ -98,6 +92,12 @@
     "showOwnerOnPage": {
       "type": "boolean",
       "default": true
+    },
+    "applicablePhases": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tags-phase.tags-phase",
+      "inversedBy": "detailed_guides"
     }
   }
 }

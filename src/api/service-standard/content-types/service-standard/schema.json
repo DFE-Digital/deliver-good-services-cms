@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "service_standards",
+  "info": {
+    "singularName": "service-standard",
+    "pluralName": "service-standards",
+    "displayName": "Service standard"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "point": {
+      "type": "integer"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "description": {
+      "type": "text"
+    },
+    "body": {
+      "type": "richtext"
+    },
+    "Section": {
+      "type": "component",
+      "component": "standard-section.section",
+      "repeatable": true
+    }
+  }
+}
