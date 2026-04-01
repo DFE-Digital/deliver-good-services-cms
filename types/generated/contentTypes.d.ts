@@ -799,6 +799,8 @@ export interface ApiDetailedGuideDetailedGuide
       Schema.Attribute.DefaultTo<false>;
     showApplicableProfessionsOnPage: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
+    showGuidePagesOnRight: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
     showLastReviewedDateOnPage: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     showOwnerOnPage: Schema.Attribute.Boolean &

@@ -107,6 +107,10 @@
     },
     "customCSS": {
       "type": "text"
+    },
+    "showGuidePagesOnRight": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
