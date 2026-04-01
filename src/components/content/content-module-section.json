@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_content_content_module_sections",
+  "info": {
+    "displayName": "Content module section",
+    "icon": "dashboard"
+  },
+  "options": {},
+  "attributes": {
+    "group": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "richtext"
+    },
+    "contentModules": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::content-entry.content-entry"
+    }
+  },
+  "config": {}
+}

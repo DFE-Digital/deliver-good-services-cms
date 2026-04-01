@@ -4,7 +4,7 @@
   "info": {
     "singularName": "content-entry",
     "pluralName": "content-entries",
-    "displayName": "Content entry"
+    "displayName": "Content module"
   },
   "options": {
     "draftAndPublish": true
@@ -32,7 +32,9 @@
         "Principle",
         "Consideration",
         "Standard point",
-        "Assessment point"
+        "Assessment point",
+        "Failure signal",
+        "Evidence"
       ]
     },
     "strength": {
@@ -69,6 +71,21 @@
       "relation": "manyToMany",
       "target": "api::tags-profession.tags-profession",
       "inversedBy": "content_entries"
+    },
+    "links": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::external-link.external-link"
+    },
+    "detailedGuides": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::detailed-guide.detailed-guide"
+    },
+    "collections": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::collection.collection"
     }
   }
 }

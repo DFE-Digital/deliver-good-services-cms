@@ -540,7 +540,7 @@ export interface ApiContentEntryContentEntry
   extends Struct.CollectionTypeSchema {
   collectionName: 'content_entries';
   info: {
-    displayName: 'Content entry';
+    displayName: 'Content module';
     pluralName: 'content-entries';
     singularName: 'content-entry';
   };
@@ -549,9 +549,17 @@ export interface ApiContentEntryContentEntry
   };
   attributes: {
     body: Schema.Attribute.RichText;
+    collections: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::collection.collection'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    detailedGuides: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::detailed-guide.detailed-guide'
+    >;
     entryType: Schema.Attribute.Enumeration<
       [
         'Requirement',
@@ -560,9 +568,15 @@ export interface ApiContentEntryContentEntry
         'Consideration',
         'Standard point',
         'Assessment point',
+        'Failure signal',
+        'Evidence',
       ]
     >;
     legalRequirement: Schema.Attribute.Boolean;
+    links: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::external-link.external-link'
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -684,7 +698,7 @@ export interface ApiDetailedGuidePageDetailedGuidePage
       'api::tags-profession.tags-profession'
     >;
     beforeContents: Schema.Attribute.RichText;
-    body: Schema.Attribute.RichText & Schema.Attribute.Required;
+    body: Schema.Attribute.RichText;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -711,6 +725,7 @@ export interface ApiDetailedGuidePageDetailedGuidePage
     publishedAt: Schema.Attribute.DateTime;
     relatedContent: Schema.Attribute.Component<'content.related-content', true>;
     relatedFiles: Schema.Attribute.Media<'files', true>;
+    Section: Schema.Attribute.Component<'content.content-module-section', true>;
     showLastReviewedDateOnPage: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     slug: Schema.Attribute.UID<'title'>;
@@ -776,6 +791,7 @@ export interface ApiDetailedGuideDetailedGuide
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 240;
       }>;
+    overrideOverviewTitle: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     relatedContent: Schema.Attribute.Component<'content.related-content', true>;
     relatedFiles: Schema.Attribute.Media<'files', true>;

@@ -29,6 +29,9 @@
       "type": "richtext",
       "required": true
     },
+    "overrideOverviewTitle": {
+      "type": "string"
+    },
     "detailed_guide_pages": {
       "type": "relation",
       "relation": "oneToMany",

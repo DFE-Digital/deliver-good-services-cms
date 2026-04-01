@@ -81,6 +81,23 @@ export interface CollectionSection extends Struct.ComponentSchema {
   };
 }
 
+export interface ContentContentModuleSection extends Struct.ComponentSchema {
+  collectionName: 'components_content_content_module_sections';
+  info: {
+    displayName: 'Content module section';
+    icon: 'dashboard';
+  };
+  attributes: {
+    body: Schema.Attribute.RichText;
+    contentModules: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::content-entry.content-entry'
+    >;
+    group: Schema.Attribute.String;
+    title: Schema.Attribute.String;
+  };
+}
+
 export interface ContentContentSection extends Struct.ComponentSchema {
   collectionName: 'components_content_content_sections';
   info: {
@@ -389,6 +406,7 @@ declare module '@strapi/strapi' {
       'collection.external-link-ref': CollectionExternalLinkRef;
       'collection.job-family': CollectionJobFamily;
       'collection.section': CollectionSection;
+      'content.content-module-section': ContentContentModuleSection;
       'content.content-section': ContentContentSection;
       'content.related-content': ContentRelatedContent;
       'content.user-need': ContentUserNeed;

@@ -30,7 +30,7 @@
     },
     "body": {
       "type": "richtext",
-      "required": true
+      "required": false
     },
     "relatedContent": {
       "type": "component",
@@ -85,6 +85,11 @@
       "allowedTypes": [
         "files"
       ]
+    },
+    "Section": {
+      "type": "component",
+      "component": "content.content-module-section",
+      "repeatable": true
     }
   }
 }
