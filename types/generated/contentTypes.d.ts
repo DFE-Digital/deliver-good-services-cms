@@ -756,6 +756,8 @@ export interface ApiDetailedGuideDetailedGuide
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    customCSS: Schema.Attribute.Text;
+    customJS: Schema.Attribute.Text;
     detailed_guide_pages: Schema.Attribute.Relation<
       'oneToMany',
       'api::detailed-guide-page.detailed-guide-page'
