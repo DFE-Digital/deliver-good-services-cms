@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "what_to_do_whens",
+  "info": {
+    "singularName": "what-to-do-when",
+    "pluralName": "what-to-do-whens",
+    "displayName": "What to do when"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "metaDescription": {
+      "type": "text"
+    }
+  }
+}

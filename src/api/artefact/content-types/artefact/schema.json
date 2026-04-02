@@ -1,0 +1,53 @@
+{
+  "kind": "collectionType",
+  "collectionName": "artefacts",
+  "info": {
+    "singularName": "artefact",
+    "pluralName": "artefacts",
+    "displayName": "Artefact"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "description": {
+      "type": "text"
+    },
+    "file": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "urlIfInternal": {
+      "type": "string"
+    },
+    "fileType": {
+      "type": "enumeration",
+      "enum": [
+        "Excel spreadsheet",
+        "Word document",
+        "PowerPoint presentation",
+        "CSV",
+        "PDF",
+        "JSON",
+        "YAML",
+        "XML",
+        "XSLT",
+        "Text document"
+      ]
+    }
+  }
+}

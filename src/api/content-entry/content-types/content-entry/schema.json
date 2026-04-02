@@ -86,6 +86,11 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::collection.collection"
+    },
+    "artefacts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::artefact.artefact"
     }
   }
 }

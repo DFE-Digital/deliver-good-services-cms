@@ -430,6 +430,52 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiArtefactArtefact extends Struct.CollectionTypeSchema {
+  collectionName: 'artefacts';
+  info: {
+    displayName: 'Artefact';
+    pluralName: 'artefacts';
+    singularName: 'artefact';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    file: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    fileType: Schema.Attribute.Enumeration<
+      [
+        'Excel spreadsheet',
+        'Word document',
+        'PowerPoint presentation',
+        'CSV',
+        'PDF',
+        'JSON',
+        'YAML',
+        'XML',
+        'XSLT',
+        'Text document',
+      ]
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::artefact.artefact'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'title'>;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    urlIfInternal: Schema.Attribute.String;
+  };
+}
+
 export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   collectionName: 'articles';
   info: {
@@ -548,6 +594,7 @@ export interface ApiContentEntryContentEntry
     draftAndPublish: true;
   };
   attributes: {
+    artefacts: Schema.Attribute.Relation<'oneToMany', 'api::artefact.artefact'>;
     body: Schema.Attribute.RichText;
     collections: Schema.Attribute.Relation<
       'oneToMany',
@@ -1494,6 +1541,36 @@ export interface ApiToolTool extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiWhatToDoWhenWhatToDoWhen
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'what_to_do_whens';
+  info: {
+    displayName: 'What to do when';
+    pluralName: 'what-to-do-whens';
+    singularName: 'what-to-do-when';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::what-to-do-when.what-to-do-when'
+    > &
+      Schema.Attribute.Private;
+    metaDescription: Schema.Attribute.Text;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -2008,6 +2085,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::artefact.artefact': ApiArtefactArtefact;
       'api::article.article': ApiArticleArticle;
       'api::collection.collection': ApiCollectionCollection;
       'api::content-entry.content-entry': ApiContentEntryContentEntry;
@@ -2032,6 +2110,7 @@ declare module '@strapi/strapi' {
       'api::tags-phase.tags-phase': ApiTagsPhaseTagsPhase;
       'api::tags-profession.tags-profession': ApiTagsProfessionTagsProfession;
       'api::tool.tool': ApiToolTool;
+      'api::what-to-do-when.what-to-do-when': ApiWhatToDoWhenWhatToDoWhen;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
