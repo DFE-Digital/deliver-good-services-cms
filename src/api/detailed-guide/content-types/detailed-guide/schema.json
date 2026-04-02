@@ -18,7 +18,8 @@
     },
     "slug": {
       "type": "uid",
-      "targetField": "title"
+      "targetField": "title",
+      "required": true
     },
     "metaDescription": {
       "type": "text",
@@ -57,14 +58,16 @@
     },
     "showLastReviewedDateOnPage": {
       "type": "boolean",
-      "default": false
+      "required": true,
+      "default": true
     },
     "showApplicablePhasesOnPage": {
       "type": "boolean",
       "default": false
     },
     "lastReviewedDate": {
-      "type": "date"
+      "type": "date",
+      "required": true
     },
     "userNeeds": {
       "type": "component",

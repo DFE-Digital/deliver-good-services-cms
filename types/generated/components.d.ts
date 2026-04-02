@@ -62,7 +62,7 @@ export interface CollectionSection extends Struct.ComponentSchema {
     displayName: 'Section';
   };
   attributes: {
-    description: Schema.Attribute.Text;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
     detailed_guide_pages: Schema.Attribute.Component<
       'collection.detailed-guide-page-ref',
       true

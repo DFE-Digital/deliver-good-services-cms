@@ -826,7 +826,7 @@ export interface ApiDetailedGuideDetailedGuide
     >;
     hideContentsOnPrimaryPage: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
-    lastReviewedDate: Schema.Attribute.Date;
+    lastReviewedDate: Schema.Attribute.Date & Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -849,10 +849,11 @@ export interface ApiDetailedGuideDetailedGuide
     showGuidePagesOnRight: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     showLastReviewedDateOnPage: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<false>;
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<true>;
     showOwnerOnPage: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<true>;
-    slug: Schema.Attribute.UID<'title'>;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
