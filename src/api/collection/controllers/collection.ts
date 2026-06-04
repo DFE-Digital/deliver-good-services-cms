@@ -3,16 +3,19 @@
  */
 
 import { factories } from '@strapi/strapi';
+import { documentServicePublishedSlice } from '../../../utils/document-query-status';
 
 const FIELDS_GUIDE = ['title', 'slug', 'metaDescription'] as const;
 const FIELDS_PAGE = ['title', 'slug', 'metaDescription'] as const;
 const FIELDS_EXT = ['title', 'url', 'newTab', 'description', 'externalLink', 'type', 'priorityInGroup'] as const;
+const FIELDS_COLLECTION = ['title', 'slug', 'metaDescription'] as const;
 const FIELDS_JOB_SPEC = ['title', 'slug', 'grade'] as const;
 
 type Section = {
   order?: number;
   title?: string;
   description?: string;
+  collections?: Array<{ collection?: unknown }>;
   detailed_guides?: Array<{ detailed_guide?: unknown }>;
   detailed_guide_pages?: Array<{ detailed_guide_page?: unknown }>;
   external_links?: Array<{ external_link?: unknown }>;
@@ -35,7 +38,7 @@ export default factories.createCoreController('api::collection.collection', ({ s
   /**
    * GET /collections/by-slug/:slug
    * Returns one collection with sections (title, description, items). Each section's items are built from
-   * detailed_guide, detailed_guide_page, external_links. Only slim fields (no body).
+   * detailed_guide, detailed_guide_page, external_links, collections, job descriptions. Only slim fields (no body).
    */
   async findBySlug(ctx) {
     const { slug } = ctx.params as { slug: string };
@@ -44,11 +47,13 @@ export default factories.createCoreController('api::collection.collection', ({ s
     }
 
     const collection = await strapi.documents('api::collection.collection').findFirst({
-      status: 'published',
+      ...documentServicePublishedSlice(ctx),
       filters: { slug: { $eq: slug } },
       populate: {
         sections: {
           populate: [
+            'collections',
+            'collections.collection',
             'detailed_guides',
             'detailed_guides.detailed_guide',
             'detailed_guide_pages',
@@ -78,13 +83,37 @@ export default factories.createCoreController('api::collection.collection', ({ s
     for (const section of rawSections ?? []) {
       const items: unknown[] = [];
 
+      for (const ref of section.collections ?? []) {
+        const collectionId = getDocumentId(ref.collection as string | object | null);
+        if (!collectionId) continue;
+        try {
+          const doc = await strapi.documents('api::collection.collection').findOne({
+            documentId: collectionId,
+            ...documentServicePublishedSlice(ctx),
+            fields: [...FIELDS_COLLECTION],
+          });
+          if (doc) {
+            const childSlug = (doc as Record<string, unknown>).slug as string;
+            items.push({
+              type: 'collection',
+              title: (doc as Record<string, unknown>).title,
+              slug: childSlug,
+              metaDescription: (doc as Record<string, unknown>).metaDescription,
+              url: `/guidance/collections/${childSlug}`,
+            });
+          }
+        } catch {
+          /* skip */
+        }
+      }
+
       for (const ref of section.detailed_guides ?? []) {
         const guideId = getDocumentId(ref.detailed_guide as string | object | null);
         if (!guideId) continue;
         try {
           const doc = await strapi.documents('api::detailed-guide.detailed-guide').findOne({
             documentId: guideId,
-            status: 'published',
+            ...documentServicePublishedSlice(ctx),
             fields: [...FIELDS_GUIDE],
           });
           if (doc)
@@ -106,7 +135,7 @@ export default factories.createCoreController('api::collection.collection', ({ s
         try {
           const page = await strapi.documents('api::detailed-guide-page.detailed-guide-page').findOne({
             documentId: pageId,
-            status: 'published',
+            ...documentServicePublishedSlice(ctx),
             fields: [...FIELDS_PAGE],
             populate: ['detailed_guide'],
           });
@@ -117,7 +146,7 @@ export default factories.createCoreController('api::collection.collection', ({ s
             if (gid) {
               const guide = await strapi.documents('api::detailed-guide.detailed-guide').findOne({
                 documentId: gid,
-                status: 'published',
+                ...documentServicePublishedSlice(ctx),
                 fields: ['slug'],
               });
               if (guide) guideSlug = (guide as Record<string, unknown>).slug as string;
@@ -146,7 +175,7 @@ export default factories.createCoreController('api::collection.collection', ({ s
         try {
           const doc = await strapi.documents('api::external-link.external-link').findOne({
             documentId: extId,
-            status: 'published',
+            ...documentServicePublishedSlice(ctx),
             fields: [...FIELDS_EXT],
           });
           if (doc)
@@ -174,7 +203,7 @@ export default factories.createCoreController('api::collection.collection', ({ s
           try {
             const doc = await strapi.documents('api::job-specification.job-specification').findOne({
               documentId: specId,
-              status: 'published',
+              ...documentServicePublishedSlice(ctx),
               fields: [...FIELDS_JOB_SPEC],
             });
             if (doc)

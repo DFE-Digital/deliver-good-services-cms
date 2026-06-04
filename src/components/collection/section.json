@@ -2,7 +2,7 @@
   "collectionName": "components_collection_sections",
   "info": {
     "displayName": "Section",
-    "description": "One section in a collection: title, description, and links (detailed guide, external links)"
+    "description": "One section in a collection: title, description, and links (collections, detailed guides, external links)"
   },
   "options": {},
   "attributes": {
@@ -36,6 +36,11 @@
     "job_descriptions": {
       "type": "component",
       "component": "collection.job-family",
+      "repeatable": true
+    },
+    "collections": {
+      "type": "component",
+      "component": "collection.collection-ref",
       "repeatable": true
     }
   },

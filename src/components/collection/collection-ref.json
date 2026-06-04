@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_collection_collection_refs",
+  "info": {
+    "displayName": "Collection ref",
+    "description": "One collection in a section"
+  },
+  "options": {},
+  "attributes": {
+    "collection": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::collection.collection"
+    }
+  },
+  "config": {}
+}

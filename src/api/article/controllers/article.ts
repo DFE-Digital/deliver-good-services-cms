@@ -3,11 +3,12 @@
  */
 
 import { factories } from '@strapi/strapi';
+import { documentServicePublishedSlice } from '../../../utils/document-query-status';
 
 export default factories.createCoreController('api::article.article', ({ strapi }) => ({
   /**
    * GET /articles/by-slug/:slug
-   * Returns one published article by slug.
+   * Returns one article by slug (`status=published` by default, `status=draft` for preview).
    */
   async findBySlug(ctx) {
     const { slug } = ctx.params as { slug: string };
@@ -16,7 +17,7 @@ export default factories.createCoreController('api::article.article', ({ strapi 
     }
 
     const doc = await strapi.documents('api::article.article').findFirst({
-      status: 'published',
+      ...documentServicePublishedSlice(ctx),
       filters: { slug: { $eq: slug } },
       fields: ['title', 'slug', 'metaDescription', 'body', 'author', 'publishedFrom', 'publishedTo'],
       populate: { leadImage: { fields: ['url', 'alternativeText'] } },

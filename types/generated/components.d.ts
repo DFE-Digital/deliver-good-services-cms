@@ -1,5 +1,19 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface CollectionCollectionRef extends Struct.ComponentSchema {
+  collectionName: 'components_collection_collection_refs';
+  info: {
+    description: 'One collection in a section';
+    displayName: 'Collection ref';
+  };
+  attributes: {
+    collection: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::collection.collection'
+    >;
+  };
+}
+
 export interface CollectionDetailedGuidePageRef extends Struct.ComponentSchema {
   collectionName: 'components_collection_detailed_guide_page_refs';
   info: {
@@ -58,10 +72,11 @@ export interface CollectionJobFamily extends Struct.ComponentSchema {
 export interface CollectionSection extends Struct.ComponentSchema {
   collectionName: 'components_collection_sections';
   info: {
-    description: 'One section in a collection: title, description, and links (detailed guide, external links)';
+    description: 'One section in a collection: title, description, and links (collections, detailed guides, external links)';
     displayName: 'Section';
   };
   attributes: {
+    collections: Schema.Attribute.Component<'collection.collection-ref', true>;
     description: Schema.Attribute.Text & Schema.Attribute.Required;
     detailed_guide_pages: Schema.Attribute.Component<
       'collection.detailed-guide-page-ref',
@@ -401,6 +416,7 @@ export interface ToolTools extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'collection.collection-ref': CollectionCollectionRef;
       'collection.detailed-guide-page-ref': CollectionDetailedGuidePageRef;
       'collection.detailed-guide-ref': CollectionDetailedGuideRef;
       'collection.external-link-ref': CollectionExternalLinkRef;

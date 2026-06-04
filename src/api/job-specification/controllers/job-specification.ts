@@ -3,6 +3,7 @@
  */
 
 import { factories } from '@strapi/strapi';
+import { documentServicePublishedSlice } from '../../../utils/document-query-status';
 
 /** Grade display order for sibling job specs (same profession). */
 const GRADE_ORDER = ['EA', 'EO', 'HEO', 'SEO', 'G7', 'G6', 'G6 HoP', 'SCS1', 'SCS2', 'SCS3'] as const;
@@ -27,7 +28,7 @@ export default factories.createCoreController(
       }
 
       const doc = await strapi.documents('api::job-specification.job-specification').findFirst({
-        status: 'published',
+        ...documentServicePublishedSlice(ctx),
         filters: { slug: { $eq: slug } },
         fields: ['title', 'slug', 'grade', 'roleDescription', 'skills', 'enableWordDocDownload'],
         populate: { profession: { fields: ['title', 'slug', 'plural', 'professionDescription'] } },
@@ -57,7 +58,7 @@ export default factories.createCoreController(
         const siblingDocs = await strapi
           .documents('api::job-specification.job-specification')
           .findMany({
-            status: 'published',
+            ...documentServicePublishedSlice(ctx),
             filters: { profession: { documentId: { $eq: professionId as string } } },
             fields: ['title', 'slug', 'grade'],
           });
