@@ -692,6 +692,7 @@ export interface ApiContentOwnerContentOwner
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    wcags: Schema.Attribute.Relation<'oneToMany', 'api::wcag.wcag'>;
   };
 }
 
@@ -1542,6 +1543,57 @@ export interface ApiToolTool extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiWcagWcag extends Struct.CollectionTypeSchema {
+  collectionName: 'wcags';
+  info: {
+    displayName: 'WCAG';
+    pluralName: 'wcags';
+    singularName: 'wcag';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    body: Schema.Attribute.RichText;
+    children: Schema.Attribute.Relation<'oneToMany', 'api::wcag.wcag'>;
+    contentOwner: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::content-owner.content-owner'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    criterionReference: Schema.Attribute.String;
+    howToPrevent: Schema.Attribute.RichText;
+    howToTest: Schema.Attribute.RichText;
+    level: Schema.Attribute.Enumeration<['A', 'AA', 'AAA', 'Best practice']>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::wcag.wcag'> &
+      Schema.Attribute.Private;
+    metaDescription: Schema.Attribute.Text &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 240;
+      }>;
+    parent: Schema.Attribute.Relation<'manyToOne', 'api::wcag.wcag'>;
+    publishedAt: Schema.Attribute.DateTime;
+    relatedContent: Schema.Attribute.Component<
+      'content.releated-content',
+      true
+    >;
+    slug: Schema.Attribute.UID<'title'>;
+    theme: Schema.Attribute.Component<'themes.wcag', true>;
+    title: Schema.Attribute.String;
+    type: Schema.Attribute.Enumeration<
+      ['Principle', 'Guideline', 'Criterion', 'Best practice']
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    version: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<2.2>;
+    w3cUrl: Schema.Attribute.String;
+  };
+}
+
 export interface ApiWhatToDoWhenWhatToDoWhen
   extends Struct.CollectionTypeSchema {
   collectionName: 'what_to_do_whens';
@@ -2111,6 +2163,7 @@ declare module '@strapi/strapi' {
       'api::tags-phase.tags-phase': ApiTagsPhaseTagsPhase;
       'api::tags-profession.tags-profession': ApiTagsProfessionTagsProfession;
       'api::tool.tool': ApiToolTool;
+      'api::wcag.wcag': ApiWcagWcag;
       'api::what-to-do-when.what-to-do-when': ApiWhatToDoWhenWhatToDoWhen;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

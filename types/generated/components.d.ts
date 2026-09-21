@@ -137,6 +137,17 @@ export interface ContentRelatedContent extends Struct.ComponentSchema {
   };
 }
 
+export interface ContentReleatedContent extends Struct.ComponentSchema {
+  collectionName: 'components_content_releated_contents';
+  info: {
+    displayName: 'releatedContent';
+  };
+  attributes: {
+    Content: Schema.Attribute.RichText;
+    Header: Schema.Attribute.String;
+  };
+}
+
 export interface ContentUserNeed extends Struct.ComponentSchema {
   collectionName: 'components_content_user_needs';
   info: {
@@ -398,6 +409,26 @@ export interface TaskHowStep extends Struct.ComponentSchema {
   };
 }
 
+export interface ThemesWcag extends Struct.ComponentSchema {
+  collectionName: 'components_themes_wcags';
+  info: {
+    displayName: 'WCAG';
+  };
+  attributes: {
+    theme: Schema.Attribute.Enumeration<
+      [
+        'Keyboard',
+        'Zoom & legibility',
+        'Sensory',
+        'Code & labels',
+        'Forms',
+        'Gestures',
+        'Whole site',
+      ]
+    >;
+  };
+}
+
 export interface ToolTools extends Struct.ComponentSchema {
   collectionName: 'components_tool_tools';
   info: {
@@ -425,6 +456,7 @@ declare module '@strapi/strapi' {
       'content.content-module-section': ContentContentModuleSection;
       'content.content-section': ContentContentSection;
       'content.related-content': ContentRelatedContent;
+      'content.releated-content': ContentReleatedContent;
       'content.user-need': ContentUserNeed;
       'lifecycle.hub-section': LifecycleHubSection;
       'lifecycle.profession-sidebar-link': LifecycleProfessionSidebarLink;
@@ -439,6 +471,7 @@ declare module '@strapi/strapi' {
       'shared.link-item': SharedLinkItem;
       'standard-section.section': StandardSectionSection;
       'task.how-step': TaskHowStep;
+      'themes.wcag': ThemesWcag;
       'tool.tools': ToolTools;
     }
   }

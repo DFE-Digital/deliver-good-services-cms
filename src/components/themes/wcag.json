@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_themes_wcags",
+  "info": {
+    "displayName": "WCAG"
+  },
+  "options": {},
+  "attributes": {
+    "theme": {
+      "type": "enumeration",
+      "enum": [
+        "Keyboard",
+        "Zoom & legibility",
+        "Sensory",
+        "Code & labels",
+        "Forms",
+        "Gestures",
+        "Whole site"
+      ]
+    }
+  },
+  "config": {}
+}

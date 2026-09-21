@@ -34,6 +34,12 @@
       "relation": "oneToMany",
       "target": "api::collection.collection",
       "mappedBy": "contentOwner"
+    },
+    "wcags": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::wcag.wcag",
+      "mappedBy": "contentOwner"
     }
   }
 }

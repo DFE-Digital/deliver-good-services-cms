@@ -1,0 +1,91 @@
+{
+  "kind": "collectionType",
+  "collectionName": "wcags",
+  "info": {
+    "singularName": "wcag",
+    "pluralName": "wcags",
+    "displayName": "WCAG"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "Principle",
+        "Guideline",
+        "Criterion",
+        "Best practice"
+      ]
+    },
+    "criterionReference": {
+      "type": "string"
+    },
+    "version": {
+      "type": "decimal",
+      "default": 2.2
+    },
+    "metaDescription": {
+      "type": "text",
+      "maxLength": 240
+    },
+    "body": {
+      "type": "richtext"
+    },
+    "howToTest": {
+      "type": "richtext"
+    },
+    "howToPrevent": {
+      "type": "richtext"
+    },
+    "level": {
+      "type": "enumeration",
+      "enum": [
+        "A",
+        "AA",
+        "AAA",
+        "Best practice"
+      ]
+    },
+    "w3cUrl": {
+      "type": "string"
+    },
+    "theme": {
+      "type": "component",
+      "component": "themes.wcag",
+      "repeatable": true
+    },
+    "relatedContent": {
+      "type": "component",
+      "component": "content.releated-content",
+      "repeatable": true
+    },
+    "contentOwner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::content-owner.content-owner",
+      "inversedBy": "wcags"
+    },
+    "parent": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::wcag.wcag",
+      "inversedBy": "children"
+    },
+    "children": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::wcag.wcag",
+      "mappedBy": "parent"
+    }
+  }
+}
